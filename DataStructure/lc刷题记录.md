@@ -2,7 +2,7 @@
 https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md
 https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/liang-zhang-tu-miao-dong-dan-diao-dui-li-9fvh/
 
-二叉树：
+### 二叉树：
 
 124. 二叉树中的最大路径和(第一次没做出来)
 https://leetcode.cn/problems/binary-tree-maximum-path-sum/solution/er-cha-shu-zhong-de-zui-da-lu-jing-he-by-ikaruga
@@ -98,7 +98,7 @@ a + c + a 的父结点。
 752. 解开密码锁
 双向BFS，需要直到起点和终点 
 
-动态规划:
+### 动态规划:
 1911. 最大子序列交替和.   状态的定义，还有选择，注意此时奇数和偶数是状态
 
 环形动态规划：
@@ -112,7 +112,7 @@ a + c + a 的父结点。
 124. 二叉树中的最大路径和
 
 
-位运算:
+### 位运算:
 136. 只出现一次的数字 
 350. 两个数组的交集 II
 
@@ -123,7 +123,7 @@ a + c + a 的父结点。
 关于外部排序与JOIN，强烈推荐大家看一下 数据库内核杂谈（六）：表的 JOIN（连接）这一系列数据库相关的文章
 https://www.infoq.cn/article/6XGx92FyQ45cMXpj2mgZ
 
-双指针: 
+### 双指针: 
 颜色分类
 26. 删除有序数组中的重复项.   AC
 80. 删除有序数组中的重复项 II.  AC
@@ -139,14 +139,14 @@ public int gcd(int x, int y){
 }
 ```
 
-设计数据结构:
+### 设计数据结构:
 面试题 16.25. LRU 缓存--哈希双链表       AC
 https://leetcode.cn/problems/lru-cache-lcci/solution/by-nehzil-zt9y/
 https://leetcode.cn/problems/lru-cache/solution/yuan-yu-linkedhashmapyuan-ma-by-jeromememory/
 
 LFU缓存.  
 
-单调栈:
+### 单调栈:
 无论题目变成什么样，请记住一个核心原则：**及时移除无用数据，保证队列/栈的有序性**
 只弹出右边的元素是单调栈，如果还要弹出左边元素就是单调队列
 
@@ -169,11 +169,11 @@ LFU缓存.
 316. 去除重复字母
 907. 子数组的最小值之和.  单调栈，找左边和右边第一个更小的元素，然后计算区间，注意要避免重复计算子数组
 
-纯算法思想
+### 纯算法思想
 31下一个排列.  AC
 556下一个更大元素III.   AC
 
-单调队列
+### 单调队列
 无论题目变成什么样，请记住一个核心原则：**及时移除无用数据，保证队列/栈的有序性**
 
 面试题 59-II. 队列的最大值（单调队列模板题）AC
@@ -182,7 +182,7 @@ LFU缓存.
 862. 和至少为 K 的最短子数组
 1499. 满足不等式的最大值.  也可以用堆
 
-滑动窗口
+### 滑动窗口
 需要满足单调性z
 209. 长度最小的子数组.  AC
 1438. 绝对差不超过限制的最长连续子数组.  AC
@@ -198,16 +198,16 @@ Integer会缓存频繁使用的数值，
 要用equals比较
 ```
 
-链表
+### 链表
 剑指 Offer II 024. 反转链表
 剑指 Offer II 027. 回文链表
 
-二分
+### 二分
 33. 搜索旋转排序数组
 153. 寻找旋转排序数组中的最小值
 81. 搜索旋转排序数组 II
 
-回溯
+### 回溯
 剑指 Offer II 079. 所有子集
 注意下列代码，回溯过程中，子集会不断地变化，而我们希望在每次添加到结果列表时，都能保存子集的快照，而不是保存对同一个列表对象的引用。如果直接将 path 添加到 ans 中，那么后续对 path 的修改，会导致 ans 列表中的子集也会发生变化。
 new ArrayList<>(path) 创建了一个新的 ArrayList 对象，并将当前的 path 内容复制到新对象中。这样，即使 path 在后续的回溯过程中发生了变化，已经添加到 ans 中的子集也不会受到影响。
@@ -243,6 +243,62 @@ https://leetcode.cn/problems/zi-fu-chuan-de-pai-lie-lcof/solution/c-zong-jie-lia
 BFS
 BFS可以用来最优解
 773. 滑动谜题
+
+
+### 树状数组
+树状数组本质是删减的线段树，适合单点修改，区间查询
+前置知识lowbit
+非负整数n在二进制表示下最低位 1及其后面的0构成的数值
+e.g. lowbit (44) = lowbit ((101100)2) = (100)2 = 4
+
+~n+1=-n （~表示取反）
+lowbit (n) =n& (~ n + 1)= n& -n
+
+307. 区域和检索 - 数组可修改
+树状数组模版题
+```go
+type NumArray struct {
+	nums []int
+	tree []int
+}
+
+func lowbit(x int) int{
+	return x&(-x)
+}
+
+func (this *NumArray) presum (idx int) int{
+	res:=0
+	for ;idx>0; idx-=lowbit(idx){
+		res+=this.tree[idx]
+	}
+	return res
+}
+
+func Constructor(nums []int) NumArray {
+	a:=NumArray{
+		nums: make([]int, len(nums)),
+		tree: make([]int, len(nums)+1),
+	}
+	for i,x :=range nums{
+		a.Update(i, x)
+	}
+	return a
+}
+
+
+func (this *NumArray) Update(index int, val int)  {
+	del:= val-this.nums[index]
+	this.nums[index]=val
+	for i:=index+1; i<len(this.tree); i+=lowbit(i){
+		this.tree[i]+=del
+	}
+}
+
+func (this *NumArray) SumRange(left int, right int) int {
+	return this.presum(right+1)-this.presum(left)
+}
+
+```
 
 
 ## 算法八股
