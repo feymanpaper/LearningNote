@@ -226,6 +226,11 @@ new ArrayList<>(path) 创建了一个新的 ArrayList 对象，并将当前的 p
     }
 ```
 
+869. 重新排序得到 2 的幂
+46. 全排列
+47. 全排列 II
+
+
 ### 多路归并
 https://lfool.github.io/LFool-Notes/algorithm/%E5%A4%9A%E8%B7%AF%E5%BD%92%E5%B9%B6%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93.html
 23. 合并 K 个升序链表
