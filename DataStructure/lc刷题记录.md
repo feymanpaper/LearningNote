@@ -123,6 +123,9 @@ a + c + a 的父结点。
 关于外部排序与JOIN，强烈推荐大家看一下 数据库内核杂谈（六）：表的 JOIN（连接）这一系列数据库相关的文章
 https://www.infoq.cn/article/6XGx92FyQ45cMXpj2mgZ
 
+1442. 形成两个异或相等数组的三元组数目
+xor的前缀和
+
 ### 双指针: 
 颜色分类
 26. 删除有序数组中的重复项.   AC
@@ -201,6 +204,23 @@ Integer会缓存频繁使用的数值，
 要用equals比较
 ```
 
+```go
+func maximumUniqueSubarray(nums []int) int {
+	//1.右侧扩张
+	for ;r<n;r++{
+		mp[nums[r]]++
+		//2.判断左侧是否需要收缩
+		for ;l<r&&mp[nums[r]]>1;l++{
+			mp[nums[l]]--
+			sum-=nums[l]
+		}
+		//3.更新答案
+		sum+=nums[r]
+		ans=max(ans, sum)
+	}
+	return ans
+}
+```
 ### 链表
 剑指 Offer II 024. 反转链表
 剑指 Offer II 027. 回文链表
