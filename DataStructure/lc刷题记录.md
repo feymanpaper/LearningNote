@@ -126,6 +126,14 @@ https://www.infoq.cn/article/6XGx92FyQ45cMXpj2mgZ
 1442. 形成两个异或相等数组的三元组数目
 xor的前缀和
 
+2429. 最小 XOR
+```go
+  c1 := bits.OnesCount(uint(num1)) //记录1的个数
+  num1 |= num1 + 1  // 最低的 0 变成 1
+  num1 &= num1 - 1  // 最低的 1 变成 0
+```
+```
+
 ### 双指针: 
 颜色分类
 26. 删除有序数组中的重复项.   AC
