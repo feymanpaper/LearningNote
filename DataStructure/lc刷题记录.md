@@ -229,6 +229,10 @@ func maximumUniqueSubarray(nums []int) int {
 	return ans
 }
 ```
+
+1423. 可获得的最大点数
+正向思维逆向思维
+
 ### 链表
 剑指 Offer II 024. 反转链表
 剑指 Offer II 027. 回文链表
