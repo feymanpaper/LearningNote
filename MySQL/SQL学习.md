@@ -27,3 +27,24 @@ https://leetcode.cn/problems/biggest-single-number/solutions/683252/dang-biao-ge
 -limit语句无法出现新的null值
 -where和having同样无法出现新的null值
 ```
+
+176. 第二高的薪水
+
+```sql
+SELECT(SELECT MAX(salary)
+FROM Employee
+WHERE salary < (SELECT MAX(DISTINCT salary) FROM Employee))
+AS SecondHighestSalary
+```
+举一反三, 如何求第N高的
+
+limit n子句表示查询结果返回前n条数据
+offset n表示跳过x条语句
+limit y offset x 分句表示查询结果跳过 x 条数据，读取前 y 条数据
+```sql
+SELECT IFNULL(
+(SELECT DISTINCT salary
+FROM Employee
+ORDER BY salary DESC
+LIMIT 1,1), NULL) AS SecondHighestSalary
+```
