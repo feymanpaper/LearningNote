@@ -287,6 +287,50 @@ func maximumUniqueSubarray(nums []int) int {
 剑指 Offer II 024. 反转链表
 剑指 Offer II 027. 回文链表
 
+### 字典树
+1233. 删除子文件夹
+字典树模版
+```go
+type Trie struct{
+	child map[string]*Trie
+	fid int
+}
+
+func newTrie() *Trie{
+	return &Trie{
+		child: map[string]*Trie{},
+		fid:   -1,
+	}
+}
+
+func (this *Trie) insert(fid int, f string){
+	ps:=strings.Split(f, "/")
+	node:=this
+	for _,p:=range ps[1:]{
+		if _,ok:=node.child[p];!ok{
+			node.child[p]=newTrie()
+		}
+		node = node.child[p]
+	}
+	node.fid = fid
+}
+
+func (this *Trie) SearchFirst() []int{
+	ans:=make([]int, 0)
+	var dfs func(root *Trie)
+	dfs = func(root *Trie) {
+		if root.fid!=-1{
+			ans=append(ans, root.fid)
+			return
+		}
+		for _,child:=range root.child{
+			dfs(child)
+		}
+	}
+	dfs(this)
+	return ans
+}
+```
 ### 并查集
 1631. 最小体力消耗路径
 
