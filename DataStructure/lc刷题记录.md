@@ -2,6 +2,9 @@
 https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md
 https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/liang-zhang-tu-miao-dong-dan-diao-dui-li-9fvh/
 
+### 枚举
+枚举子数组
+需要 O（n^2）
 ### 二叉树：
 
 124. 二叉树中的最大路径和(第一次没做出来)
