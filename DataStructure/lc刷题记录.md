@@ -18,6 +18,24 @@ a + c + a 的父结点。
 另外结点有可能是负值，最大和肯定就要想办法舍弃负值
 但是上面 3 种情况，无论哪种，a 作为联络点，都不能够舍弃。
 
+2415. 反转二叉树的奇数层
+同时遍历一颗二叉树的左，右，并且交换
+```go
+	var dfs func(root1 *TreeNode, root2 *TreeNode, isodd bool)
+	dfs = func(root1 *TreeNode, root2 *TreeNode, isodd bool){
+		if root1==nil||root2==nil{
+			return
+		}
+		if isodd{
+			root1.Val,root2.Val=root2.Val,root1.Val
+		}
+		dfs(root1.Left, root2.Right, !isodd)
+		dfs(root1.Right, root2.Left, !isodd)
+	}
+	dfs(root.Left, root.Right, true)
+	return root
+```
+
 99. 恢复二叉搜索树(第一次没做出来)
 中序遍历，同时记录前面的状态
 
