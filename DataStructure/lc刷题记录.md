@@ -165,6 +165,10 @@ p和q分别在左右子树
 
 1048. 最长字符串链
 
+线性dp
+2008. 出租车的最大盈利
+2830. 销售利润最大化
+
 
 环形动态规划：
 918. 环形子数组的最大和
@@ -388,6 +392,84 @@ new ArrayList<>(path) 创建了一个新的 ArrayList 对象，并将当前的 p
 46. 全排列
 47. 全排列 II
 
+78. 子集
+```Go
+//method1, 选哪个数
+func subsets(nums []int) [][]int {
+	ans:=make([][]int, 0)
+	temp:=make([]int, 0)
+	n:=len(nums)
+	var backtrack func(idx int)
+	backtrack = func(idx int) {
+		tans:=make([]int, len(temp))
+		copy(tans, temp)
+		ans=append(ans, tans)
+		if idx>=n{
+			return
+		}
+		for i:=idx; i<n; i++{
+			temp=append(temp, nums[i])
+			backtrack(i+1)
+			temp=temp[0:len(temp)-1]
+		}
+	}
+	backtrack(0)
+	return ans
+}
+
+//method2:选或者不选
+func subsets(nums []int) [][]int {
+    n := len(nums)
+    ans := make([][]int, 0, 1<<n)
+    path := make([]int, 0, n)
+    var dfs func(int)
+    dfs = func(i int) {
+        if i == n {
+            ans = append(ans, append([]int(nil), path...)) // 固定答案
+            return
+        }
+        // 不选 nums[i]
+        dfs(i + 1)
+        // 选 nums[i]
+        path = append(path, nums[i])
+        dfs(i + 1)
+        path = path[:len(path)-1] // 恢复现场
+    }
+    dfs(0)
+    return ans
+}
+```
+
+90. 子集 II
+```go
+func subsetsWithDup(nums []int) [][]int {
+	sort.Ints(nums)
+	n:=len(nums)
+	ans:=make([][]int, 0, 2<<n)
+	path:=make([]int, 0)
+	var backtrack func(idx int)
+	vis:=make([]bool, n)
+	backtrack = func(idx int) {
+		tans:=make([]int, len(path))
+		copy(tans, path)
+		ans=append(ans, tans)
+		for i:=idx; i<n; i++{
+			//进行去重
+			if i>0&&!vis[i-1]&&nums[i]==nums[i-1]{
+				continue
+			}
+			vis[i]=true
+			path=append(path, nums[i])
+			backtrack(i+1)
+			path=path[0:len(path)-1]
+			vis[i]=false
+		}
+		return
+	}
+	backtrack(0)
+	return ans
+}
+```
 
 ### 多路归并
 https://lfool.github.io/LFool-Notes/algorithm/%E5%A4%9A%E8%B7%AF%E5%BD%92%E5%B9%B6%E6%8A%80%E5%B7%A7%E6%80%BB%E7%BB%93.html
