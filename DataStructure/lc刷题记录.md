@@ -2,6 +2,9 @@
 https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md
 https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/liang-zhang-tu-miao-dong-dan-diao-dui-li-9fvh/
 
+### 哈希
+128. 最长连续序列
+
 ### 枚举
 枚举子数组
 需要 O（n^2）
