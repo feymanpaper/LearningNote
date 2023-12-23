@@ -8,7 +8,69 @@ https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/lian
 ### 堆
 1962. 移除石子使总数最小
 堆模版
+模版1
+```go
+func minStoneSum(piles []int, k int) (ans int) {
+    h := &hp{piles}
+    heap.Init(h) // 原地堆化
+    for ; k > 0 && piles[0] > 0; k-- {
+        piles[0] -= piles[0] / 2 // 直接修改堆顶
+        heap.Fix(h, 0)
+    }
+    for _, x := range piles {
+        ans += x
+    }
+    return
+}
 
+type hp struct{ sort.IntSlice }
+func (h hp) Less(i, j int) bool { return h.IntSlice[i] > h.IntSlice[j] }
+func (h *hp) Push(v any)        { h.IntSlice = append(h.IntSlice, v.(int)) }
+func (h *hp) Pop() any {
+	a := h.IntSlice
+	v := a[len(a)-1]
+	h.IntSlice = a[:len(a)-1]
+	return v
+}
+
+```
+模版2
+```go
+type hp []int
+func (h hp) Len() int{
+	return len(h)
+}
+func (h hp) Swap(i, j int){
+	h[i],h[j]=h[j],h[i]
+}
+func (h hp) Less(i, j int) bool{
+	return h[i]>h[j]
+}
+func (h *hp) Push(x any){
+	*h=append(*h, x.(int))
+}
+func (h *hp)Pop() any{
+	t:=*h
+	x:=t[len(t)-1]
+	*h=t[:len(t)-1]
+	return x
+}
+func minStoneSum(piles []int, k int) int {
+	h:=&hp{}
+	for _,x:=range piles{
+		heap.Push(h, x)
+	}
+	for i:=0; i<k; i++{
+		x:=heap.Pop(h).(int)
+		heap.Push(h, x-x/2)
+	}
+	ans:=0
+	for _,x:=range *h{
+		ans+=x
+	}
+	return ans
+}
+```
 ### 枚举
 枚举子数组
 需要 O（n^2）
