@@ -5,6 +5,10 @@ https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/lian
 ### 哈希
 128. 最长连续序列
 
+### 堆
+1962. 移除石子使总数最小
+堆模版
+
 ### 枚举
 枚举子数组
 需要 O（n^2）
