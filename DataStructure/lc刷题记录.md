@@ -230,6 +230,14 @@ p和q分别在左右子树
 
 
 ### 动态规划:
+300. 最长递增子序列
+动态规划O(n^2)可以优化成O(nlogn) patience sorting-->扑克牌排序
+https://leetcode.cn/problems/longest-increasing-subsequence/solutions/14796/dong-tai-gui-hua-she-ji-fang-fa-zhi-pai-you-xi-jia/
+类似的题
+1671. 得到山形数组的最少删除次数
+
+
+
 1911. 最大子序列交替和.   状态的定义，还有选择，注意此时奇数和偶数是状态
 
 1048. 最长字符串链
