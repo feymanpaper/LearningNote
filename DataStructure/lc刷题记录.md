@@ -308,6 +308,24 @@ public int gcd(int x, int y){
 }
 ```
 
+面试题 16.01. 交换数字
+不用临时变量，直接交换a和b的值
+sol1: 数学，当成一个数轴,这种方法存在溢出的风险，不安全, eg\[-2147483647, 2147483647\]
+int的最大值
+int 的最小值。 -2147483648 
+int 的最大值。  2147483647
+```go
+a=b-a
+b=b-a
+a=b+a
+```
+sol2: 位运算
+```go
+a=a^b
+b=a^b
+a=a^b
+```
+
 ### 设计数据结构:
 面试题 16.25. LRU 缓存--哈希双链表       AC
 https://leetcode.cn/problems/lru-cache-lcci/solution/by-nehzil-zt9y/
@@ -366,10 +384,31 @@ LFU缓存.
 
 ### 滑动窗口
 需要满足单调性z
+3. 无重复字符的最长子串
+模板题
+```go
+func lengthOfLongestSubstring(s string) int {
+    mp:=make(map[byte]int)
+    l:=0
+    n:=len(s)
+    ans:=0
+	//右侧不断更新寻找符合条件的答案
+    for r:=0; r<n; r++{
+        mp[s[r]]++
+        //左边收缩得到最优解
+        for ;l<r&&mp[s[r]]>1;l++{
+            mp[s[l]]--
+        }
+        //更新答案
+        ans=max(ans, r-l+1)
+    }
+    return ans
+}
+```
 209. 长度最小的子数组.  AC
 1438. 绝对差不超过限制的最长连续子数组.  AC
 211. 最大连续1的个数 III.  AC
-76. 最小覆盖子串
+76. 最小覆盖子串 AC
 滑动窗口--不断增加right，直到达到一个可行解，然后left优化
 注意有个坑点:
 ```
@@ -379,24 +418,9 @@ Integer会缓存频繁使用的数值，
 超过该范围就会new 一个对象
 要用equals比较
 ```
-
-```go
-func maximumUniqueSubarray(nums []int) int {
-	//1.右侧扩张
-	for ;r<n;r++{
-		mp[nums[r]]++
-		//2.判断左侧是否需要收缩
-		for ;l<r&&mp[nums[r]]>1;l++{
-			mp[nums[l]]--
-			sum-=nums[l]
-		}
-		//3.更新答案
-		sum+=nums[r]
-		ans=max(ans, sum)
-	}
-	return ans
-}
-```
+632. 最小区间
+sol1:预处理后滑动窗口
+sol2:排序k个有序链表
 
 1423. 可获得的最大点数
 正向思维逆向思维
