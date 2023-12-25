@@ -2,6 +2,75 @@
 https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md
 https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/liang-zhang-tu-miao-dong-dan-diao-dui-li-9fvh/
 
+### 哈希
+128. 最长连续序列
+
+### 堆
+1962. 移除石子使总数最小
+堆模版
+模版1
+```go
+func minStoneSum(piles []int, k int) (ans int) {
+    h := &hp{piles}
+    heap.Init(h) // 原地堆化
+    for ; k > 0 && piles[0] > 0; k-- {
+        piles[0] -= piles[0] / 2 // 直接修改堆顶
+        heap.Fix(h, 0)
+    }
+    for _, x := range piles {
+        ans += x
+    }
+    return
+}
+
+type hp struct{ sort.IntSlice }
+func (h hp) Less(i, j int) bool { return h.IntSlice[i] > h.IntSlice[j] }
+func (h *hp) Push(v any)        { h.IntSlice = append(h.IntSlice, v.(int)) }
+func (h *hp) Pop() any {
+	a := h.IntSlice
+	v := a[len(a)-1]
+	h.IntSlice = a[:len(a)-1]
+	return v
+}
+
+```
+模版2
+```go
+type hp []int
+func (h hp) Len() int{
+	return len(h)
+}
+func (h hp) Swap(i, j int){
+	h[i],h[j]=h[j],h[i]
+}
+func (h hp) Less(i, j int) bool{
+	return h[i]>h[j]
+}
+func (h *hp) Push(x any){
+	*h=append(*h, x.(int))
+}
+func (h *hp)Pop() any{
+	t:=*h
+	x:=t[len(t)-1]
+	*h=t[:len(t)-1]
+	return x
+}
+func minStoneSum(piles []int, k int) int {
+	h:=&hp{}
+	for _,x:=range piles{
+		heap.Push(h, x)
+	}
+	for i:=0; i<k; i++{
+		x:=heap.Pop(h).(int)
+		heap.Push(h, x-x/2)
+	}
+	ans:=0
+	for _,x:=range *h{
+		ans+=x
+	}
+	return ans
+}
+```
 ### 枚举
 枚举子数组
 需要 O（n^2）
@@ -161,6 +230,14 @@ p和q分别在左右子树
 
 
 ### 动态规划:
+300. 最长递增子序列
+动态规划O(n^2)可以优化成O(nlogn) patience sorting-->扑克牌排序
+https://leetcode.cn/problems/longest-increasing-subsequence/solutions/14796/dong-tai-gui-hua-she-ji-fang-fa-zhi-pai-you-xi-jia/
+类似的题
+1671. 得到山形数组的最少删除次数
+
+
+
 1911. 最大子序列交替和.   状态的定义，还有选择，注意此时奇数和偶数是状态
 
 1048. 最长字符串链
@@ -191,13 +268,18 @@ dp\[l]\[r], 从左区间到右区间取得的最大值
 ### 位运算:
 136. 只出现一次的数字 
 350. 两个数组的交集 II
-
+351. 
 对应进阶问题三，如果内存十分小，不足以将数组全部载入内存，那么必然也不能使用哈希这类费空间的算法，只能选用空间复杂度最小的算法，即解法一。
 
 但是解法一中需要改造，一般说排序算法都是针对于内部排序，一旦涉及到跟磁盘打交道（外部排序），则需要特殊的考虑。归并排序是天然适合外部排序的算法，可以将分割后的子数组写到单个文件中，归并时将小文件合并为更大的文件。当两个数组均排序完成生成两个大文件后，即可使用双指针遍历两个文件，如此可以使空间复杂度最低。
 
 关于外部排序与JOIN，强烈推荐大家看一下 数据库内核杂谈（六）：表的 JOIN（连接）这一系列数据库相关的文章
 https://www.infoq.cn/article/6XGx92FyQ45cMXpj2mgZ
+
+
+&^ 二元运算符的操作结果是“bit clear"  
+a &^ b 的意思就是 清零a中，ab都为1的位
+sync.Mutex中有应用: state &^ mutexWoken：更新状态，标识不存在抢锁的协程；
 
 1442. 形成两个异或相等数组的三元组数目
 xor的前缀和
@@ -265,7 +347,8 @@ LFU缓存.
 12. 去除重复字母
 13. 子数组的最小值之和.  单调栈，找左边和右边第一个更小的元素，然后计算区间，注意要避免重复计算子数组
 14. 美丽塔 I
-15. 子数组范围和
+2866. 美丽塔 II
+16. 子数组范围和
 
 
 ### 纯算法思想
