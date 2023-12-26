@@ -251,7 +251,7 @@ https://leetcode.cn/problems/longest-increasing-subsequence/solutions/14796/dong
 
 1048. 最长字符串链
 
-<<<<<<< HEAD
+
 线性dp
 2008. 出租车的最大盈利
 2830. 销售利润最大化
@@ -260,7 +260,7 @@ https://leetcode.cn/problems/longest-increasing-subsequence/solutions/14796/dong
 dp\[l]\[r], 从左区间到右区间取得的最大值
 877. 石子游戏
 486. 预测赢家
->>>>>>> origin/main
+
 
 
 环形动态规划：
@@ -303,6 +303,23 @@ xor的前缀和
   num1 &= num1 - 1  // 最低的 1 变成 0
 ```
 
+面试题 16.01. 交换数字
+不用临时变量，直接交换a和b的值
+sol1: 数学，当成一个数轴,这种方法存在溢出的风险，不安全, eg\[-2147483647, 2147483647\]
+int 的最小值。 -2147483648 
+int 的最大值。  2147483647
+```go
+a=b-a
+b=b-a
+a=b+a
+```
+
+sol2: 位运算
+```go
+a=a^b
+b=a^b
+a=a^b
+```
 
 ### 双指针: 
 颜色分类
@@ -319,23 +336,6 @@ public int gcd(int x, int y){
     return y==0?x:gcd(y, x%y);  
 }
 
-
-面试题 16.01. 交换数字
-不用临时变量，直接交换a和b的值
-sol1: 数学，当成一个数轴,这种方法存在溢出的风险，不安全, eg\[-2147483647, 2147483647\]
-int的最大值
-int 的最小值。 -2147483648 
-int 的最大值。  2147483647
-```go
-a=b-a
-b=b-a
-a=b+a
-```
-sol2: 位运算
-```go
-a=a^b
-b=a^b
-a=a^b
 ```
 
 ### 设计数据结构:
