@@ -2,6 +2,13 @@
 https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md
 https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/liang-zhang-tu-miao-dong-dan-diao-dui-li-9fvh/
 
+### 模拟
+43. 字符串相乘
+https://leetcode.cn/problems/multiply-strings/solutions/188815/gao-pin-mian-shi-xi-lie-zi-fu-chuan-cheng-fa-by-la/
+```
+想要做出这道题，需要知道一个数学定理：
+两个长度分别为n和m的数相乘，长度不会超过n+m
+```
 ### 哈希
 128. 最长连续序列
 
