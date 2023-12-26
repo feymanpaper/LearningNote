@@ -11,6 +11,12 @@ https://leetcode.cn/problems/multiply-strings/solutions/188815/gao-pin-mian-shi-
 想要做出这道题，需要知道一个数学定理：
 两个长度分别为n和m的数相乘，长度不会超过n+m
 ```
+
+### 前缀和
+https://leetcode.cn/problems/subarray-sum-equals-k/solutions/562174/de-liao-yi-wen-jiang-qian-zhui-he-an-pai-yhyf/?envType=study-plan-v2&envId=top-100-liked
+560. 和为 K 的子数组
+前缀和+hash
+
 ### 哈希
 128. 最长连续序列
 
@@ -83,6 +89,14 @@ func minStoneSum(piles []int, k int) int {
 ### 枚举
 枚举子数组
 需要 O（n^2）
+
+### 区间问题
+252. 会议室
+56. 合并区间
+57. 插入区间
+1288. 删除被覆盖区间
+228. 汇总区间
+
 ### 二叉树：
 
 124. 二叉树中的最大路径和(第一次没做出来)
@@ -384,6 +398,48 @@ LFU缓存.
 
 ### 单调队列
 无论题目变成什么样，请记住一个核心原则：**及时移除无用数据，保证队列/栈的有序性**
+
+239. 滑动窗口最大值
+单调队列模板
+```go
+type MonoQue struct{
+	que []int
+}
+func (q *MonoQue) Push(x int){
+	for len(q.que)>0&&x>q.que[len(q.que)-1]{
+		q.que=q.que[:len(q.que)-1]
+	}
+	q.que=append(q.que, x)
+}
+func (q *MonoQue) PeekMax() int{
+	return q.que[0]
+}
+func (q *MonoQue) PopMax(x int) int{
+	maxx:=q.que[0]
+	if x==maxx{
+		q.que=q.que[1:]
+		return maxx
+	}
+	return -1
+}
+
+func maxSlidingWindow(nums []int, k int) []int {
+	q:=&MonoQue{que: make([]int, 0)}
+	n:=len(nums)
+	ans:=make([]int, n-k+1)
+	for i:=0; i<k; i++{
+		q.Push(nums[i])
+	}
+	ans[0]=q.PeekMax()
+	for i:=1; i<n-k+1;i++{
+		end:=i+k-1
+		q.PopMax(nums[i-1])
+		q.Push(nums[end])
+		ans[i]=q.PeekMax()
+	}
+	return ans
+}
+```
 
 面试题 59-II. 队列的最大值（单调队列模板题）AC
 239. 滑动窗口最大值.   AC
