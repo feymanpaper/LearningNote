@@ -1,3 +1,4 @@
+https://mp.weixin.qq.com/s/PT1zpv3bvJiIJweN3mvX7g
 map 中，key 的数据类型必须为可比较的类型，slice、map、func不可比较
 ### 并发冲突
 map 不是并发安全的数据结构，倘若存在并发读写行为，会抛出 fatal error.
