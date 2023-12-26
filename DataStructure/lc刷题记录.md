@@ -4,6 +4,8 @@ https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/lian
 
 ### 模拟
 43. 字符串相乘
+sol1:做加法(普通竖式)
+sol2:做乘法(优化竖式)
 https://leetcode.cn/problems/multiply-strings/solutions/188815/gao-pin-mian-shi-xi-lie-zi-fu-chuan-cheng-fa-by-la/
 ```
 想要做出这道题，需要知道一个数学定理：
