@@ -2,6 +2,11 @@
 https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md
 https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/liang-zhang-tu-miao-dong-dan-diao-dui-li-9fvh/
 
+### 数组
+41. 缺失的第一个正数
+189. 轮转数组
+
+
 ### 模拟
 43. 字符串相乘
 sol1:做加法(普通竖式)
