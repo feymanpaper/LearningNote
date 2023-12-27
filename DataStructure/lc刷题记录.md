@@ -4,7 +4,7 @@ https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/lian
 
 ### 数组
 41. 缺失的第一个正数
-sol1: 交换
+sol1: 原地交换
 ```go
 func firstMissingPositive(nums []int) int {
     n:=len(nums)
@@ -21,7 +21,30 @@ func firstMissingPositive(nums []int) int {
     return n+1
 }
 ```
-sol2:
+sol2:原地哈希
+```go
+func firstMissingPositive(nums []int) int {
+    n:=len(nums)
+    for i,x:=range nums{
+        if x<=0{
+            nums[i]=(n+1)
+        }
+    }
+    for _,x:=range nums{
+        if x>=1&&x<=n&&!(nums[x-1]<0){
+            nums[x-1]=-nums[x-1]
+        }else if -x>=1&&-x<=n&&!(nums[-x-1]<0){
+            nums[-x-1]=-nums[-x-1]
+        }
+    }
+    for i,x:=range nums{
+        if x>0{
+            return i+1
+        }
+    }
+    return n+1
+}
+```
 
 189. 轮转数组
 
