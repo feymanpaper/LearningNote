@@ -4,6 +4,25 @@ https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/lian
 
 ### 数组
 41. 缺失的第一个正数
+sol1: 交换
+```go
+func firstMissingPositive(nums []int) int {
+    n:=len(nums)
+    for i:=0; i<n; i++{
+        for nums[i]>=1&&nums[i]<=n&&nums[i]!=nums[nums[i]-1]{
+            nums[i],nums[nums[i]-1]=nums[nums[i]-1],nums[i]
+        }
+    }
+    for i,x:=range nums{
+        if x!=i+1{
+            return i+1
+        }
+    }
+    return n+1
+}
+```
+sol2:
+
 189. 轮转数组
 
 
