@@ -2,6 +2,42 @@
 https://github.com/EndlessCheng/codeforces-go/blob/master/leetcode/SOLUTIONS.md
 https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/solution/liang-zhang-tu-miao-dong-dan-diao-dui-li-9fvh/
 
+### 排序
+快速排序
+```go
+import "math/rand"
+import "time"
+func sortArray(nums []int) []int {
+    rand.Seed(time.Now().UnixNano())
+    quickSort(nums, 0, len(nums)-1)
+    return nums
+}
+func quickSort(nums []int, l, r int){
+    if l>=r{
+        return 
+    }
+    idx:=partition(nums, l, r)
+    quickSort(nums, l, idx-1)
+    quickSort(nums, idx+1, r)
+}
+func partition(nums []int, l, r int) int{
+    rd:=rand.Int()%(r-l+1)+l
+    nums[l],nums[rd]=nums[rd],nums[l]
+    pivot:=nums[l]
+    for l<r{
+        for l<r&&nums[r]>=pivot{
+            r--
+        }
+        nums[l]=nums[r]
+        for l<r&&nums[l]<=pivot{
+            l++
+        }
+        nums[r]=nums[l]
+    }
+    nums[l]=pivot
+    return l
+}
+```
 ### 数组
 41. 缺失的第一个正数
 sol1: 原地交换
@@ -131,6 +167,44 @@ func minStoneSum(piles []int, k int) int {
 		ans+=x
 	}
 	return ans
+}
+```
+
+215. 数组中的第K个最大元素
+sol1:求k最大用小根堆 O(nlogk)
+sol2:应用快速排序的partition思想
+```go
+func findKthLargest(nums []int, k int) int {
+	n:=len(nums)
+	return quickSelect(nums, 0, n-1, n-k)
+}
+
+func quickSelect(nums []int, l, r, k int) int{
+	idx:=partition(nums, l, r)
+	if idx<k{
+		return quickSelect(nums, idx+1, r, k)
+	}else if idx>k{
+		return quickSelect(nums, l, idx-1, k)
+	}
+	return nums[idx]
+}
+
+func partition(nums []int, l, r int) int{
+	rd:=rand.Int()%(r-l+1)+l
+	nums[l],nums[rd]=nums[rd],nums[l]
+	pivot:=nums[l]
+	for l<r{
+		for l<r&&nums[r]>=pivot{
+			r--
+		}
+		nums[l]=nums[r]
+		for l<r&&nums[l]<=pivot{
+			l++
+		}
+		nums[r]=nums[l]
+	}
+	nums[l]=pivot
+	return l
 }
 ```
 ### 枚举
