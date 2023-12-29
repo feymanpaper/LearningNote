@@ -1,5 +1,8 @@
 ![](Golang/img/1697776119445.png)
 ### 单例模式
+这篇博客讲了sync.Once的底层实现
+https://mp.weixin.qq.com/s/KRgNwJt1C7q2ckeqCu9pCQ
+
 饿汉式
 在包被加载时创建
 实例是在包被导入时初始化的，所以如果初始化耗时，会导致程序加载时间比较长。
