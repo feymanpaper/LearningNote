@@ -95,6 +95,26 @@ https://leetcode.cn/problems/multiply-strings/solutions/188815/gao-pin-mian-shi-
 两个长度分别为n和m的数相乘，长度不会超过n+m
 ```
 
+2706. 购买两块巧克力
+动态维护最小值和次小值
+```go
+func buyChoco(prices []int, money int) int {
+	mn1, mn2 := math.MaxInt, math.MaxInt
+	for _, p := range prices {
+		if p < mn1 {
+			mn2 = mn1
+			mn1 = p
+		} else if p < mn2 {
+			mn2 = p
+		}
+	}
+	if mn1+mn2 <= money {
+		return money - mn1 - mn2
+	}
+	return money
+}
+```
+
 ### 前缀和
 https://leetcode.cn/problems/subarray-sum-equals-k/solutions/562174/de-liao-yi-wen-jiang-qian-zhui-he-an-pai-yhyf/?envType=study-plan-v2&envId=top-100-liked
 560. 和为 K 的子数组
