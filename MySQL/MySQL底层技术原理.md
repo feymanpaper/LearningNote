@@ -576,6 +576,103 @@ https://mp.weixin.qq.com/s?__biz=MzI1MDU0MTc2MQ==&mid=2247484458&idx=1&sn=33a193
 https://mp.weixin.qq.com/s?__biz=MzI1MDU0MTc2MQ==&mid=2247484497&idx=1&sn=1cbf4fe107b01f6d53e4b2ad4bb09a83&chksm=e981e7ffdef66ee91b2def2b0e42511c2e75fd19e2040b1ec03e6653fec2300250c057dd1b1e&scene=178&cur_album_id=2241646955158355975#rd
 
 https://xiaolincoding.com/mysql/transaction/mvcc.html#%E4%BA%8B%E5%8A%A1%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7
+![](Pasted%20image%2020240104105414.png)
+#### 事务有哪些特性？
+不过并不是所有的引擎都能支持事务，比如 MySQL 原生的 MyISAM 引擎就不支持事务，也正是这样，所以大多数 MySQL 的引擎都是用 InnoDB。
+
+事务看起来感觉简单，但是要实现事务必须要遵守 4 个特性，分别如下：
+- **原子性（Atomicity）**
+- **一致性（Consistency）**
+- **隔离性（Isolation）**
+- **持久性（Durability）**
+InnoDB 引擎通过什么技术来保证事务的这四个特性的呢？
+- 持久性是通过 redo log （重做日志）来保证的；
+- 原子性是通过 undo log（回滚日志） 来保证的；
+- 隔离性是通过 MVCC（多版本并发控制） 或锁机制来保证的；
+- 一致性则是通过持久性+原子性+隔离性来保证；
+#### 并行事务会引发什么问题？
+脏读
+如果一个事务「读到」了另一个「未提交事务修改过的数据」，就意味着发生了「脏读」现象
+
+不可重复读：事务T1读取了一条记录，事务T2修改或者删除了同一条记录，并且提交。如果事务T1试图再次读取同一条记录的时候，会读到被事务T2修改的数据或者压根读不到
+
+幻读
+在一个事务内多次查询某个符合查询条件的「记录数量」，如果出现前后两次查询到的记录数量不一样的情况，就意味着发生了「幻读」现象。
+```
+The so-called phantom problem occurs within a transaction when the same query produces different sets of rows at different times. For example, if a SELECT is executed twice, but returns a row the second time that was not returned the first time, the row is a “phantom” row.
+```
+
+SQL1992标准
+```
+P1 ("Dirty read"): SQL-transaction T1 modifies a row. SQL-
+    transaction T2 then reads that row before T1 performs a COMMIT.
+    If T1 then performs a ROLLBACK, T2 will have read a row that was
+    never committed and that may thus be considered to have never
+    existed.
+
+P2 ("Non-repeatable read"): SQL-transaction T1 reads a row. SQL-
+	transaction T2 then modifies or deletes that row and performs
+	a COMMIT. If T1 then attempts to reread the row, it may receive
+	the modified value or discover that the row has been deleted.
+
+P3 ("Phantom"): SQL-transaction T1 reads the set of rows N
+	that satisfy some <search condition>. SQL-transaction T2 then
+	executes SQL-statements that generate one or more rows that
+	satisfy the <search condition> used by SQL-transaction T1. If
+	SQL-transaction T1 then repeats the initial read with the same
+	<search condition>, it obtains a different collection of rows.
+```
+#### 事务的隔离级别有哪些？
+读未提交（read uncommitted），指一个事务还没提交时，它做的变更就能被其他事务看到；
+读提交（read committed），指一个事务提交之后，它做的变更才能被其他事务看到；
+可重复读（repeatable read），指一个事务执行过程中看到的数据，一直跟这个事务启动时看到的数据是一致的，MySQL InnoDB 引擎的默认隔离级别；
+串行化（serializable ）；会对记录加上读写锁，在多个事务对这条记录进行读写操作时，如果发生了读写冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行；
+#### Read View 在 MVCC 里如何工作的？
+![](Pasted%20image%2020240104105929.png)
+这种通过「版本链」来控制并发事务访问同一个记录时的行为就叫 MVCC（多版本并发控制）。
+可重复读隔离级别是启动事务时生成一个 Read View，然后整个事务期间都在用这个 Read View
+读提交隔离级别是在每次读取数据时，都会生成一个新的 Read View
+
+可见的：id < min_trx_id 或者处于 \[min_trx_id, max_trx_id) 且不在 m_ids 中  
+不可见的：id >= max_trx_id 或者处于 \[min_trx_id, max_trx_id) 且在 m_ids 中  
+因此，判断可见与不可见这些元素都是必不可少的。
+```
+而对于幻读现象，不建议将隔离级别升级为串行化，因为这会导致数据库并发时性能很差。MySQL InnoDB 引擎的默认隔离级别虽然是「可重复读」，但是它很大程度上避免幻读现象
+
+- 针对快照读（普通 select 语句），是通过 MVCC 方式解决了幻读，因为可重复读隔离级别下，事务执行过程中看到的数据，一直跟这个事务启动时看到的数据是一致的，即使中途有其他事务插入了一条数据，是查询不出来这条数据的，所以就很好了避免幻读问题。
+- 针对当前读（select ... for update 等语句），是通过 next-key lock（记录锁+间隙锁）方式解决了幻读，因为当执行 select ... for update 语句的时候，会加上 next-key lock，如果有其他事务在 next-key lock 锁范围内插入了一条记录，那么这个插入语句就会被阻塞，无法成功插入，所以就很好了避免幻读问题。
+```
+#### InnoDB 存储引擎是如何在使用二级索引查询中保证 MVCC 机制的？  
+只有在聚簇索引记录中才有 trx_id 和 roll_pointer，如果某个查询语句是使用的二级索引来查询，要使用下面的方式判断可见性：  
+二级索引页面的 Page Header 部分有一个名为 PAGE_MAX_TRX_ID 的属性，执行增删改操作时，如果执行该操作的事物的事务 id 大于 PAGE_MAX_TRX_ID 的属性值，则将其值设置为执行操作的事务id，这就意味着 PAGE_MAX_TRX_ID 属性值设置为执行该操作的最大事务 id。  
+当 SELECT 语句访问某个二级索引记录时，如果 ReadView 的 min_trx_id > PAGE_MAX_TRX_ID 属性值？如果是，则说明该页面中的所有记录对该 ReadView 可见；否则就需要执行回表判断  
+利用二级索引记录中的主键值进行回表操作，得到对应的聚簇索引记录后在按照聚簇索引的方式，判断该可见性。
+
+#### 快照读(Consistent Read)是如何避免幻读的？
+可重复读隔离级是由 MVCC（多版本并发控制）实现的，实现的方式是开始事务后（执行 begin 语句后），在执行第一个查询语句后，会创建一个 Read View，**后续的查询语句利用这个 Read View，通过这个 Read View 就可以在 undo log 版本链找到事务开始时的数据，所以事务过程中每次查询的数据都是一样的**，即使中途有其他事务插入了新纪录，是查询不出来这条数据的，所以就很好了避免幻读问题。
+
+#### 当前读(Locking Read)是如何避免幻读的？
+MySQL 里除了普通查询是快照读，其他都是**当前读**，比如 update、insert、delete，这些语句执行前都会查询最新版本的数据，然后再做进一步的操作。
+
+这很好理解，假设你要 update 一个记录，另一个事务已经 delete 这条记录并且提交事务了，这样不是会产生冲突吗，所以 update 的时候肯定要知道最新的数据。
+所以，Innodb 引擎为了解决「可重复读」隔离级别使用「当前读」而造成的幻读问题，就引出了间隙锁。
+
+#### 幻读被完全解决了吗？
+**可重复读隔离级别下虽然很大程度上避免了幻读，但是还是没有能完全解决幻读**。
+**要避免这类特殊场景下发生幻读的现象的话，就是尽量在开启事务之后，马上执行 select ... for update 这类当前读的语句**，因为它会对记录加 next-key lock，从而避免其他事务插入一条新记录。
+
+抛开MySQL不谈，普通的可重复读为什么不能解决幻读问题，就是因为没有对insert、update、delete语句做限制，只要有其他事务插入或删除数据，就可能导致幻读问题的出现。
+这就牵扯出当前读和快照读的问题，快照读使用了MVCC快照机制解决了幻读问题，是因为当前事务执行期间其他事务的insert、update、delete语句对于当前事务来说不可见。
+但是当前读不一样，他是直接从表中读取最新的数据，本质上和MVCC的快照机制是冲突的，当前读对于其他事务的insert、update、delete语句对于当前事务来说都是可见的。
+所以与其说这两种场景下有幻读问题发生，不如说MySQL 可重复读隔离级别，不能解决当前读产生的幻读问题。
+
+例1：
+在可重复读隔离级别下，事务 A 第一次执行普通的 select 语句时生成了一个 ReadView，之后事务 B 向表中新插入了一条 id = 5 的记录并提交。接着，事务 A 对 id = 5 这条记录进行了更新操作，在这个时刻，这条新记录的 trx_id 隐藏列的值就变成了事务 A 的事务 id，之后事务 A 再使用普通 select 语句去查询这条记录时就可以看到这条记录了，于是就发生了幻读。
+
+例2
+- T1 时刻：事务 A 先执行「快照读语句」：select * from t_test where id > 100 得到了 3 条记录。
+- T2 时刻：事务 B 往插入一个 id= 200 的记录并提交；
+- T3 时刻：事务 A 再执行「当前读语句」 select * from t_test where id > 100 for update 就会得到 4 条记录，此时也发生了幻读现象。
 
 ### MySQL锁，锁的到底是什么？
 https://mp.weixin.qq.com/s?__biz=MzI1MDU0MTc2MQ==&mid=2247484827&idx=1&sn=51de4e6579bb0a0312e405acf1aa6721&chksm=e981e635def66f2391717267acbf62f90c0b4dbff0233514762ef20c318d8950dcd4ab6eeac5&scene=178&cur_album_id=2241646955158355975#rd
