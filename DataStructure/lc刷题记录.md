@@ -397,6 +397,35 @@ p和q分别在左右子树
 300. 最长递增子序列
 动态规划O(n^2)可以优化成O(nlogn) patience sorting-->扑克牌排序
 https://leetcode.cn/problems/longest-increasing-subsequence/solutions/14796/dong-tai-gui-hua-she-ji-fang-fa-zhi-pai-you-xi-jia/
+```go
+func lengthOfLIS(nums []int) int {
+    piles:=make([]int, 0)
+    for _,x:=range nums{
+        idx:=bisearch(piles, x)
+        if idx==len(piles){
+            piles=append(piles, x)
+        }else{
+            piles[idx]=x
+        }
+    }
+    return len(piles)
+}
+
+func bisearch(nums []int, tar int) int{
+    n:=len(nums)
+    l,r:=-1,n
+    for l+1!=r{
+        mid:=l+(r-l)/2
+        if tar>nums[mid]{
+            l=mid
+        }else{
+            r=mid
+        }
+    }
+    return r
+}
+```
+
 类似的题
 1671. 得到山形数组的最少删除次数
 
@@ -690,6 +719,26 @@ func (this *Trie) SearchFirst() []int{
 1631. 最小体力消耗路径
 
 ### 二分
+红蓝二分
+https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/967331/lan-hong-hua-fen-fa-dan-mo-ban-miao-sha-e7r40/
+主体思路：left 指针掌管左边蓝色区域， right 指针掌管右边红色区域，两者互不冲突，通过不断向目标元素靠近扩大掌管区域，直到两者掌管区域接壤，即 left+1\=\=right 时终止。
+由于left的初始值为-1, 终止条件是left+1!=right, 因此right的区间范围为\[0,n\]
+反之, right的初始值为n, 因此left的区间范围为\[-1,n-1\]
+```go
+func bisearch(nums []int, tar int) int{
+    n:=len(nums)
+    l,r:=-1,n
+    for l+1!=r{
+        mid:=l+(r-l)/2
+        if tar>nums[mid]{
+            l=mid
+        }else{
+            r=mid
+        }
+    }
+    return r
+}
+```
 33. 搜索旋转排序数组
 153. 寻找旋转排序数组中的最小值
 81. 搜索旋转排序数组 II
