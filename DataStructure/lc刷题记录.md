@@ -95,9 +95,39 @@ https://leetcode.cn/problems/multiply-strings/solutions/188815/gao-pin-mian-shi-
 两个长度分别为n和m的数相乘，长度不会超过n+m
 ```
 54. 螺旋矩阵
+48. 旋转图像
+```
+上下对称：matrix[i][j] -> matrix[n-i-1][j]，（列不变）
+左右对称：matrix[i][j] -> matrix[i][n-j-1]，（行不变）
+主对角线对称：matrix[i][j] -> matrix[j][i]，（行列互换）
+副对角线对称：matrix[i][j] -> matrix[n-j-1][n-i-1] （行列均变，且互换）
+```
+旋转90度-->上下对称 + 主对角线对称或者主对角线对称 + 左右对称
+```go
+func rotate(matrix [][]int)  {
+    upDownSym(matrix)
+    mainDiagSym(matrix)
+    return 
+}
+func upDownSym(matrix [][]int){
+    n:=len(matrix)
+    for i:=0; i<n/2; i++{
+        for j:=0; j<n; j++{
+            matrix[i][j],matrix[n-1-i][j]=matrix[n-1-i][j],matrix[i][j]
+        }
+    }
+}
+func mainDiagSym(matrix [][]int){
+    n:=len(matrix)
+    for i:=0; i<n; i++{
+        for j:=i+1; j<n; j++{
+            matrix[i][j],matrix[j][i]=matrix[j][i],matrix[i][j]
+        }
+    }
+}
+```
 
-
-2706. 购买两块巧克力
+50. 购买两块巧克力
 动态维护最小值和次小值
 ```go
 func buyChoco(prices []int, money int) int {
