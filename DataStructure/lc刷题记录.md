@@ -745,6 +745,37 @@ func bisearch(nums []int, tar int) int{
 153. 寻找旋转排序数组中的最小值
 81. 搜索旋转排序数组 II
 
+二维二分
+74. 搜索二维矩阵
+两次二分
+240. 搜索二维矩阵 II
+sol1:用右上角巧妙法来做
+sol2:二维二分
+```go
+func searchMatrix(matrix [][]int, target int) bool {
+    m:=len(matrix)
+    n:=len(matrix[0])
+    var search func(rs, re, cs, ce int) bool
+    search = func(rs, re, cs, ce int) bool{
+        if rs>re||cs>ce{
+            return false
+        }
+	    //这个是必要的, 因为target<matrix[rowmid][colmid]时search(rs,rowmid,cs,colmid)没变化会爆内存
+        if rs==re&&cs==ce{
+            return target==matrix[rs][cs]
+        }
+        rowmid:=rs+(re-rs)>>1
+        colmid:=cs+(ce-cs)>>1
+        if target>matrix[rowmid][colmid]{
+            return search(rs, rowmid, colmid+1, ce)||search(rowmid+1,re, cs,colmid)||search(rowmid+1,re,colmid+1,ce)
+        }else if target<matrix[rowmid][colmid]{
+            return search(rs,rowmid,cs,colmid)||search(rs, rowmid, colmid+1,ce)||search(rowmid+1,re,cs,colmid)
+        }
+        return true
+    }
+    return search(0, m-1, 0, n-1)
+}
+```
 ### 前后缀
 1930. 长度为 3 的不同回文子序列
 2484. 统计回文子序列数目
