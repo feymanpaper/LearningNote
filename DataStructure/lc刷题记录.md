@@ -94,6 +94,33 @@ https://leetcode.cn/problems/multiply-strings/solutions/188815/gao-pin-mian-shi-
 想要做出这道题，需要知道一个数学定理：
 两个长度分别为n和m的数相乘，长度不会超过n+m
 ```
+```go
+func multiply(num1 string, num2 string) string {
+    if num1=="0"||num2=="0"{
+        return "0"
+    }
+    n:=len(num1)
+    m:=len(num2)
+    by:=make([]int, n+m)
+    for i:=n-1; i>=0; i--{
+        for j:=m-1; j>=0; j--{
+            idx:=i+j+1
+            add:=int(num1[i]-'0')*int(num2[j]-'0')
+            by[idx]+=add%10
+            carry:=by[idx]/10
+            by[idx]=by[idx]%10
+            by[idx-1]+=carry+add/10
+        }
+    }
+    idx:=0
+    ans:=""
+    for ;idx<len(by)&&by[idx]==0;idx++{}
+    for ;idx<len(by);idx++{
+        ans+=strconv.Itoa(by[idx])
+    }
+    return ans
+}
+```
 54. 螺旋矩阵
 48. 旋转图像
 ```
