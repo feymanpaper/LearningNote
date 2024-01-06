@@ -286,6 +286,87 @@ func partition(nums []int, l, r int) int{
 	return l
 }
 ```
+
+295. 数据流的中位数
+经典题目大小堆找中位数
+```go
+//小堆
+type minhp []int
+func (h minhp) Len() int{
+    return len(h)
+}
+func (h minhp) Swap(i, j int){
+    h[i],h[j]=h[j],h[i]
+}
+func (h minhp) Less(i, j int) bool{
+    return h[i]<h[j]
+}
+func (h *minhp) Push(x any){
+    *h=append(*h, x.(int))
+}
+func (h *minhp) Pop() any{
+    t:=*h
+    x:=t[len(t)-1]
+    *h=t[0:len(t)-1]
+    return x
+}
+//大堆
+type maxhp []int
+func (h maxhp) Len() int{
+    return len(h)
+}
+func (h maxhp) Swap(i, j int){
+    h[i],h[j]=h[j],h[i]
+}
+func (h maxhp) Less(i, j int) bool{
+    return h[i]>h[j]
+}
+func (h *maxhp) Push(x any){
+    *h=append(*h, x.(int))
+}
+func (h *maxhp) Pop() any{
+    t:=*h
+    x:=t[len(t)-1]
+    *h=t[0:len(t)-1]
+    return x
+}
+type MedianFinder struct {
+    lh maxhp
+    rh minhp
+}
+func Constructor() MedianFinder {
+    m:=MedianFinder{
+        lh:maxhp{},
+        rh:minhp{},
+    }
+    return m
+}
+func (this *MedianFinder) AddNum(num int)  {
+    tlen:=len(this.lh)+len(this.rh)
+    if tlen&1==0{
+        if len(this.lh)==0{
+            heap.Push(&this.lh, num)
+        }else{
+            heap.Push(&this.rh, num)
+            x:=heap.Pop(&this.rh).(int)
+            heap.Push(&this.lh, x)
+        }
+    }else{
+        //奇数
+        heap.Push(&this.lh, num)
+        x:=heap.Pop(&this.lh).(int)
+        heap.Push(&this.rh, x)
+    }
+    return 
+}
+func (this *MedianFinder) FindMedian() float64 {
+    tlen:=len(this.lh)+len(this.rh)
+    if tlen&1==0{
+        return float64(this.lh[0]+this.rh[0])/2
+    }
+    return float64(this.lh[0])
+}
+```
 ### 枚举
 枚举子数组
 需要 O（n^2）
@@ -488,8 +569,6 @@ func bisearch(nums []int, tar int) int{
 类似的题
 1671. 得到山形数组的最少删除次数
 
-
-
 1911. 最大子序列交替和.   状态的定义，还有选择，注意此时奇数和偶数是状态
 
 1048. 最长字符串链
@@ -504,8 +583,6 @@ dp\[l]\[r], 从左区间到右区间取得的最大值
 877. 石子游戏
 486. 预测赢家
 
-
-
 环形动态规划：
 918. 环形子数组的最大和
 213. 打家劫舍 II
@@ -516,6 +593,11 @@ dp\[l]\[r], 从左区间到右区间取得的最大值
 2246. 相邻字符不同的最长路径
 124. 二叉树中的最大路径和
 
+字符串类:
+5. 最长回文子串
+sol1:dp
+sol2:中心扩散
+均为O(n^2)
 ### 贪心
 55. 跳跃游戏
 45. 跳跃游戏 II
