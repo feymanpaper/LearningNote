@@ -841,8 +841,27 @@ func reverse(root *ListNode) *ListNode{
     return last
 }
 ```
+进阶题: 反转链表前 N 个节点
+```go
+var successor *ListNode // 后继节点
+// 反转以 head 为起点的 n 个节点，返回新的头结点
+func reverseN(head *ListNode, n int) *ListNode {
+    if n == 1 {
+        // 记录第 n + 1 个节点
+        successor = head.Next
+        return head
+    }
+    // 以 head.Next 为起点，需要反转前 n - 1 个节点
+    last := reverseN(head.Next, n-1)
+    head.Next.Next = head
+    head.Next = successor
+    return last
+}
+```
 234. 回文链表
 空间O(1)sol: 找到链表中点, 反转后半链表，然后比较
+
+
 
 ### 字典树
 1233. 删除子文件夹
