@@ -659,7 +659,30 @@ sol1:位运算
 sol2:快慢指针
 sol3:原地哈希  类似41. 缺失的第一个正数
 ### 双指针: 
-颜色分类
+75. 颜色分类
+该题为经典的荷兰国旗问题，由于题目本质是要我们将数分成三段
+题解如下: 
+https://leetcode.cn/problems/sort-colors/solutions/1868577/by-ac_oier-7lwk/?envType=study-plan-v2&envId=top-100-liked
+```go
+func sortColors(nums []int)  {
+    l:=0
+    r:=len(nums)-1
+    i:=0
+    for i<=r{
+        if nums[i]==1{
+            i++
+        }else if nums[i]==0{
+            nums[l],nums[i]=nums[i],nums[l]
+            l++
+            i++
+        }else{
+            nums[i],nums[r]=nums[r],nums[i]
+            r--
+        }
+    }
+    return 
+}
+```
 26. 删除有序数组中的重复项.   AC
 80. 删除有序数组中的重复项 II.  AC
 264. 丑数II  三指针    AC
