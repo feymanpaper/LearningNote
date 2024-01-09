@@ -858,10 +858,33 @@ func reverseN(head *ListNode, n int) *ListNode {
     return last
 }
 ```
+92. 反转链表 II, 反转left到right的节点
+sol: 先实现反转前N个节点, 然后递归处理
+```go
+var successor *ListNode
+func reverseN(root *ListNode, n int) *ListNode{
+    if n==1{
+        successor=root.Next
+        return root
+    }
+    last:=reverseN(root.Next, n-1)
+    root.Next.Next=root
+    root.Next=successor
+    return last
+}
+
+func reverseBetween(head *ListNode, left int, right int) *ListNode {
+    if left==1{
+        return reverseN(head, right)
+    }
+    last:=reverseBetween(head.Next, left-1,right-1)
+    head.Next=last
+    return head
+}
+
+```
 234. 回文链表
 空间O(1)sol: 找到链表中点, 反转后半链表，然后比较
-
-
 
 ### 字典树
 1233. 删除子文件夹
