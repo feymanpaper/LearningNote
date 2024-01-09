@@ -842,6 +842,7 @@ func reverse(root *ListNode) *ListNode{
 }
 ```
 进阶题: 反转链表前 N 个节点
+sol: 需要存后继
 ```go
 var successor *ListNode // 后继节点
 // 反转以 head 为起点的 n 个节点，返回新的头结点
@@ -859,7 +860,7 @@ func reverseN(head *ListNode, n int) *ListNode {
 }
 ```
 92. 反转链表 II, 反转left到right的节点
-sol: 先实现反转前N个节点, 然后递归处理
+sol: 先实现反转前N个节点, 然后递归处理, 需要存后继
 ```go
 var successor *ListNode
 func reverseN(root *ListNode, n int) *ListNode{
@@ -883,7 +884,7 @@ func reverseBetween(head *ListNode, left int, right int) *ListNode {
 }
 ```
 25. K 个一组翻转链表
-sol: 先实现反转前N个节点, 然后递归反转k个节点
+sol: 先实现反转前N个节点, 然后递归反转k个节点, 不需要存后继
 ```go
 func reverseN(head *ListNode, n int) *ListNode{
     if n==1{
@@ -913,7 +914,6 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
 ```
 234. 回文链表
 空间O(1)sol: 找到链表中点, 反转后半链表，然后比较
-
 ### 字典树
 1233. 删除子文件夹
 字典树模版
