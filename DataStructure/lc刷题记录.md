@@ -841,6 +841,8 @@ func reverse(root *ListNode) *ListNode{
     return last
 }
 ```
+234. 回文链表
+空间O(1)sol: 找到链表中点, 反转后半链表，然后比较
 
 ### 字典树
 1233. 删除子文件夹
