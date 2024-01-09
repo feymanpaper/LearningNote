@@ -881,7 +881,35 @@ func reverseBetween(head *ListNode, left int, right int) *ListNode {
     head.Next=last
     return head
 }
+```
+25. K 个一组翻转链表
+sol: 先实现反转前N个节点, 然后递归反转k个节点
+```go
+func reverseN(head *ListNode, n int) *ListNode{
+    if n==1{
+        return head
+    }
+    last:=reverseN(head.Next, n-1)
+    head.Next.Next=head
+    head.Next=nil
+    return last
+}
 
+func reverseKGroup(head *ListNode, k int) *ListNode {
+    if head==nil{
+        return nil
+    }
+    cur:=head
+    for i:=0; i<k; i++{
+        if cur==nil{
+            return head
+        }
+        cur=cur.Next
+    }
+    last:=reverseN(head, k)
+    head.Next=reverseKGroup(cur, k)
+    return last
+}
 ```
 234. 回文链表
 空间O(1)sol: 找到链表中点, 反转后半链表，然后比较
