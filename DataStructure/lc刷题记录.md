@@ -828,6 +828,20 @@ sol2:排序k个有序链表
 ```
 24. 两两交换链表中的节点
 迭代
+
+206. 反转链表
+```go
+func reverse(root *ListNode) *ListNode{
+    if root==nil||root.Next==nil{
+        return root
+    }
+    last:=reverse(root.Next)
+    root.Next.Next=root
+    root.Next=nil
+    return last
+}
+```
+
 ### 字典树
 1233. 删除子文件夹
 字典树模版
