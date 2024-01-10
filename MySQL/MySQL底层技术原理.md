@@ -678,6 +678,7 @@ MySQL 里除了普通查询是快照读，其他都是**当前读**，比如 upd
 https://mp.weixin.qq.com/s?__biz=MzI1MDU0MTc2MQ==&mid=2247484827&idx=1&sn=51de4e6579bb0a0312e405acf1aa6721&chksm=e981e635def66f2391717267acbf62f90c0b4dbff0233514762ef20c318d8950dcd4ab6eeac5&scene=178&cur_album_id=2241646955158355975#rd
 
 ### 揭开 Buffer Pool 的面纱
+https://xiaolincoding.com/mysql/buffer_pool/buffer_pool.html
 ![](Pasted%20image%2020240110153428.png)
 #### 为什么要有 Buffer Pool？
 有了缓冲池后：
@@ -694,4 +695,18 @@ Buffer Pool 里有三种页和链表来管理数据:
 简单的 LRU 算法并没有被 MySQL 使用，因为简单的 LRU 算法无法避免下面这两个问题：
 - 预读失效；
 - Buffer Pool 污染；
+```
+如何解决预读失效?
+划分这两个区域后，预读的页就只需要加入到 old 区域的头部，当页被真正访问的时候，才将页插入 young 区域的头部
+如果预读的页一直没有被访问，就会从 old 区域移除，这样就不会影响 young 区域中的热点数据
 
+怎么解决出现 Buffer Pool 污染而导致缓存命中率下降的问题？
+只有同时满足「被访问」与「在 old 区域停留时间超过 1 秒」两个条件，才会被插入到 young 区域头部
+```
+#### 脏页什么时候会被刷入磁盘？
+当 redo log 日志满了的情况下，会主动触发脏页刷新到磁盘；
+Buffer Pool 空间不足时，需要将一部分数据页淘汰掉，如果淘汰的是脏页，需要先将脏页同步到磁盘；
+MySQL 认为空闲时，后台线程会定期将适量的脏页刷入到磁盘；
+MySQL 正常关闭之前，会把所有的脏页刷入到磁盘；
+
+在开启了慢 SQL 监控后，如果你发现「偶尔」会出现一些用时稍长的 SQL，这可因为脏页在刷新到磁盘时导致数据库性能抖动。如果在很短的时间出现这种现象，就需要调大 Buffer Pool 空间或 redo log 日志的大小。
