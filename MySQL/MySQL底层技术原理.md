@@ -677,3 +677,21 @@ MySQL 里除了普通查询是快照读，其他都是**当前读**，比如 upd
 ### MySQL锁，锁的到底是什么？
 https://mp.weixin.qq.com/s?__biz=MzI1MDU0MTc2MQ==&mid=2247484827&idx=1&sn=51de4e6579bb0a0312e405acf1aa6721&chksm=e981e635def66f2391717267acbf62f90c0b4dbff0233514762ef20c318d8950dcd4ab6eeac5&scene=178&cur_album_id=2241646955158355975#rd
 
+### 揭开 Buffer Pool 的面纱
+![](Pasted%20image%2020240110153428.png)
+#### 为什么要有 Buffer Pool？
+有了缓冲池后：
+当读取数据时，如果数据存在于 Buffer Pool 中，客户端就会直接读取 Buffer Pool 中的数据，否则再去磁盘中读取。
+当修改数据时，首先是修改 Buffer Pool 中数据所在的页，然后将其页设置为脏页，最后由后台线程将脏页写入到磁盘
+
+Buffer Pool 是在 MySQL 启动的时候，向操作系统申请的一片连续的内存空间，默认配置下 Buffer Pool 只有 128MB 。
+#### 如何管理 Buffer Pool？
+Buffer Pool 里有三种页和链表来管理数据:
+- Free Page（空闲页），表示此页未被使用，位于 Free 链表；
+- Clean Page（干净页），表示此页已被使用，但是页面未发生修改，位于LRU 链表。
+- Dirty Page（脏页），表示此页「已被使用」且「已经被修改」，其数据和磁盘上的数据已经不一致。当脏页上的数据写入磁盘后，内存数据和磁盘数据一致，那么该页就变成了干净页。脏页同时存在于 LRU 链表和 Flush 链表。
+
+简单的 LRU 算法并没有被 MySQL 使用，因为简单的 LRU 算法无法避免下面这两个问题：
+- 预读失效；
+- Buffer Pool 污染；
+
