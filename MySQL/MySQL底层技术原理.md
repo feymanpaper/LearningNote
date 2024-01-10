@@ -648,6 +648,10 @@ P3 ("Phantom"): SQL-transaction T1 reads the set of rows N
 当 SELECT 语句访问某个二级索引记录时，如果 ReadView 的 min_trx_id > PAGE_MAX_TRX_ID 属性值？如果是，则说明该页面中的所有记录对该 ReadView 可见；否则就需要执行回表判断  
 利用二级索引记录中的主键值进行回表操作，得到对应的聚簇索引记录后在按照聚簇索引的方式，判断该可见性。
 
+#### MySQL 是怎么解决幻读的？
+
+
+
 #### 快照读(Consistent Read)是如何避免幻读的？
 可重复读隔离级是由 MVCC（多版本并发控制）实现的，实现的方式是开始事务后（执行 begin 语句后），在执行第一个查询语句后，会创建一个 Read View，**后续的查询语句利用这个 Read View，通过这个 Read View 就可以在 undo log 版本链找到事务开始时的数据，所以事务过程中每次查询的数据都是一样的**，即使中途有其他事务插入了新纪录，是查询不出来这条数据的，所以就很好了避免幻读问题。
 
