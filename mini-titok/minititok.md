@@ -17,9 +17,11 @@ ps -e | grep prometheus
 
 
 
-Consul:
+Consul
 http://localhost:8500/
-Prometheus:
+Prometheus
 http://localhost:9010/
-Grafana:
+Grafana
 http://localhost:3000/
+Jager
+http://localhost:16686/
