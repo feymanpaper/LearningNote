@@ -15,8 +15,6 @@ lsof -nP -p 76440 | grep LISTEN
 ps -e | grep prometheus
 ```
 
-
-
 Consul
 http://localhost:8500/
 Prometheus
@@ -24,4 +22,5 @@ http://localhost:9010/
 Grafana
 http://localhost:3000/
 Jager
+是用docker启动的，需要到官网找命令
 http://localhost:16686/
