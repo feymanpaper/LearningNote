@@ -11,6 +11,8 @@ Redis 一共设计了 5 种类型，分别是 sdshdr5、sdshdr8、sdshdr16、sds
 ![](Pasted%20image%2020240111001536.png)
 
 
-## 其他
-### 点赞计数的思考
+## 待看
+点赞计数的思考
 https://tans.fun/archives/guan-yu-dian-zan-ji-shu-qi-de-yi-xie-si-kao
+源码角度理解Redis底层原理
+https://www.xiebruce.top/1820.html
