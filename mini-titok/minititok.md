@@ -18,7 +18,7 @@ ps -e | grep prometheus
 Consul
 http://localhost:8500/
 Prometheus
-http://localhost:9010/
+http://localhost:9090/
 Grafana
 http://localhost:3000/
 Jager
