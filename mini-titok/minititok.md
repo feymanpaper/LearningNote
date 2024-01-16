@@ -28,6 +28,13 @@ http://localhost:16686/
 ```
 sum(rate(http_server_requests_duration_ms_count{env="$env", service_group="$service_group", service_name="$service_name"}[1m])) by (path)
 ```
+### 缓存和DB一致性
+SingleFlight, 布隆过滤器
+热点数据放在redis里，读如果redis存在直接返回，不存在则缓存空值，则查db，这个时候会有布隆过滤器和singlefight防击穿
+写，如果redis存在直接写，如果redis不存在则从db reload，然后在redis写，然后用kafka异步同步到mysql里
+
+对于用户信息这种热点数据，读多写少, 则用kafka异步, 一个partition或者保证同步mysql
+对于点赞，关注这种热点操作，读多写多, 则用kafka分partition+批量同步mysql
 
 ### 参考资料 
 go-zero进行RPC调用、错误处理、JWT鉴权
