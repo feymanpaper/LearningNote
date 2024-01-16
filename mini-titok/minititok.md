@@ -31,8 +31,17 @@ sum(rate(http_server_requests_duration_ms_count{env="$env", service_group="$serv
 ### 微服务
 划分为
 用户微服务，计数微服务，关系微服务
+好处:
+把计数统一放在计数微服务，好处是查用户信息时只需要查一次微服务可以得到各种计数信息,否则要查多个微服务
+
+坏处:
+关注的时候要操作计数和关系微服务，原来只需要操作一个
+
+如何保证点赞的实时性
 
 ### redis和DB考虑
+获取个人信息，在redis+singleflight，且计数数据也在user服务的情况下，qps可以达到5000
+
 SingleFlight, 布隆过滤器
 热点数据放在redis里，读如果redis存在直接返回，不存在则缓存空值，则查db，这个时候会有布隆过滤器和singlefight防击穿
 写，如果redis存在直接写，如果redis不存在则从db reload，然后在redis写，然后用kafka异步同步到mysql里
