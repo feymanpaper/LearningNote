@@ -150,8 +150,31 @@ ghz --insecure --proto=relation.proto --call=relation.Relation.FollowList -d '{
     "sortType": 0,
     "ToId": -1
 }' -c 100 -n 5000  127.0.0.1:8082
-
 ```
+
+### 项目亮点
+mysql设置合适的索引
+识别热点操作：点赞，关注，评论; 查看热点用户信息，查看热点视频信息，粉丝列表, 评论列表
+对于读多写少，如查看和修改用户信息，视频信息。采用旁路缓存+写数据库，删缓存来维持数据库和缓存一致性
+singleflight保护数据库, 读如果redis存在直接返回，不存在则缓存空值，则查db，这个时候会singleflight防击穿。修改的话就先写数据库，删除缓存, 同时有singleflight防止删除大v导致击穿
+
+对于读多写多，读如果redis存在直接返回，不存在则缓存空值，查db，singleflight防止击穿。对于修改，如新增加列表，新增计数，直接查看缓存是否存在，不存在就load上来，然后更新缓存，异步kafka更新数据库.
+
+对于计数，不需要考虑消息顺序性，可以设置多个partition来提高吞吐量。kafka可以异步+批量更新
+对于关注的状态, 有顺序性, 需要考虑顺序性.设置一个partition?
+
+对于列表如何优化？
+在redis上直接改, mysql深分页优化
+
+如何快速识别是否关注，是否点赞？
+bloom filter
+
+jaeger链路追踪原理？etcd注册中心原理？
+
+feed流如何设计?
+
+
+
 ### 参考资料 
 go-zero进行RPC调用、错误处理、JWT鉴权
 https://juejin.cn/post/7272581426331254839#heading-10
