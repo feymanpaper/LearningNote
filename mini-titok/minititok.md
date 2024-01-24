@@ -1,3 +1,30 @@
+### Go-zero
+#### Goctl
+生成model代码
+```
+goctl model mysql datasource --dir ./ --table fan  --url "root:351681578wdp@tcp(127.0.0.1:3306)/titok_relation"
+```
+生成rpc
+```
+goctl rpc protoc ./user.proto --go_out=. --go-grpc_out=. --zrpc_out=./
+```
+生成api
+```
+goctl api go --dir=./ --api applet.api
+```
+### 配置环境
+### ETCD
+### Redis
+### MySQL
+#### Consul
+http://localhost:8500/
+```
+//启动
+consul agent -dev
+```
+#### Prometheus
+http://localhost:9090/
+
 Prometheus 监控服务, 由于默认的9090端口被clashx占用，使用brew services start会失败
 启动prometheus
 ```
@@ -13,22 +40,61 @@ lsof -nP -p 76440 | grep LISTEN
 # 查看进程号
 ps -e | grep prometheus
 ```
-
-Consul
-http://localhost:8500/
-Prometheus
-http://localhost:9090/
-Grafana
+#### Grafana
 http://localhost:3000/
-Jager
-是用docker启动的，需要到官网找命令
-http://localhost:16686/
-
 ```
 sum(rate(http_server_requests_duration_ms_count{env="$env", service_group="$service_group", service_name="$service_name"}[1m])) by (path)
 ```
+#### Jager
+是用docker启动的，需要到官网找命令
+http://localhost:16686/
+```
+docker run --rm --name jaeger \
+  -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
+  -p 6831:6831/udp \
+  -p 6832:6832/udp \
+  -p 5778:5778 \
+  -p 16686:16686 \
+  -p 4317:4317 \
+  -p 4318:4318 \
+  -p 14250:14250 \
+  -p 14268:14268 \
+  -p 14269:14269 \
+  -p 9411:9411 \
+  jaegertracing/all-in-one:1.53
+```
+### Kafka
+```
+## 创建Zookeeper容器
+docker run -d --name zookeeper --network feyman -p 2181:2181 -t zookeeper
+## 创建kafka容器
+docker run -d --name kafka --network beyond -p 9092:9092 -e KAFKA_BROKER_ID=0 -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 wurstmeister/kafka
+
+cd /opt/kafka/bin
+
+创建topic
+./kafka-topics.sh --create --topic topic-like --bootstrap-server localhost:9092
+
+查看topic信息
+./kafka-topics.sh --describe --topic topic-like --bootstrap-server localhost:9092
+
+生产消息
+./kafka-console-producer.sh --topic topic-like --bootstrap-server localhost:9092
+
+消费消息
+./kafka-console-consumer.sh --topic topic-like --from-beginning --bootstrap-server localhost:9092
+```
 
 ### 微服务
+```
+api
+8888
+
+rpc
+user: 8080
+count: 8081
+relation: 8082
+```
 划分为
 用户微服务，计数微服务，关系微服务
 好处:
@@ -73,8 +139,28 @@ countkey:countval
 
 如果user微服务不冗余计数字段的话，如果计数微服务挂了，用户刷视频的时候就拿不到这些计数数据了，可以在user表冗余这些计数字段，每隔一段时间把异步把计数字段同步到user冗余的字段里？？？
 
+### 压测
+grpc压测
+ghz
+```
+ghz --insecure --proto=relation.proto --call=relation.Relation.FollowList -d '{
+    "UserId": 1,
+    "cursor": 0,
+    "pageSize": 20,
+    "sortType": 0,
+    "ToId": -1
+}' -c 100 -n 5000  127.0.0.1:8082
+
+```
 ### 参考资料 
 go-zero进行RPC调用、错误处理、JWT鉴权
 https://juejin.cn/post/7272581426331254839#heading-10
 一文教你搞定所有前端鉴权与后端鉴权方案，让你不再迷惘
 https://juejin.cn/post/7129298214959710244?searchId=2024011511531288D4F42FCB2509035E49
+微博数据库设计，提供了布隆过滤器查isFollow
+https://www.zhihu.com/question/19715683/answer/598815840
+
+听说你会架构设计？来，弄个微博系统
+https://zhuanlan.zhihu.com/p/610915804
+
+redis和mysql都可以批量查询，减少IO
