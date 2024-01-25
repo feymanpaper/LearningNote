@@ -29,3 +29,7 @@ https://www.cnblogs.com/crazymakercircle/p/17168230.html
 ![](Pasted%20image%2020240108133312.png)
 
 PS:消息队列中消息的异步写入磁盘、MySQL 的 InnoDB Buffer Pool 机制都用到了这种策略
+
+### Redis为什么这么快
+https://mp.weixin.qq.com/s/z4VjDaDDbspFz1rIBwazIA
+![](Pasted%20image%2020240125215135.png)
