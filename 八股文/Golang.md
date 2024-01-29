@@ -1,4 +1,3 @@
-## Channel
 ### channel实现once
 利用缓冲区大小为1的channel
 ```go
@@ -48,3 +47,6 @@ func (s Semaphore) UnLock() {
 	<-s.ch
 }
 ```
+
+### 描述下什么是GMP？
+见mindnode
