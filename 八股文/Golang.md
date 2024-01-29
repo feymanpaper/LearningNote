@@ -51,6 +51,9 @@ func (s Semaphore) UnLock() {
 ### 描述下什么是GMP？
 见mindnode
 
+### 描述下Go内存模型
+见mindnode
+
 ### 如何申请0空间
 ```go
 func mallocgc(size uintptr, typ *_type, needzero bool) unsafe.Pointer {                        
