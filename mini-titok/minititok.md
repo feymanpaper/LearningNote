@@ -180,6 +180,10 @@ feed流如何设计?
 
 因此用这种方案：user服务冗余这些计数信息，然后通过canal和消息队列来更新计数。
 
+计数统计，为什么用string or hash而不用HyperLogLog，string or hash占用内存更低
+`HyperLogLog`：存在一定误差，占用内存少，稳定占用 12k 左右内存，可以统计 2^64 元素
+`HyperLogLog`主要是用于去重
+
 单独分一个count表就不考虑了，需要改架构...
 
 可以计算一下redis的结构，多少数据占用了多少内存, 100w用户的数据占用多少
