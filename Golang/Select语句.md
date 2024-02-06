@@ -1,0 +1,14 @@
+https://i6448038.github.io/2019/03/23/go-select-principle/
+
+select是Golang在语言层面提供的I/O多路复用的机制，其专门用来检测多个channel是否准备完毕：可读或可写
+
+### selectgo函数做了什么
+打乱传入的case结构体顺序
+锁住其中的所有的channel
+遍历所有的channel，查看其是否可读或者可写
+如果其中的channel可读或者可写，则解锁所有channel，并返回对应的channel数据
+假如没有channel可读或者可写，但是有default语句，则同上:返回default语句对应的scase并解锁所有的channel
+假如既没有channel可读或者可写，也没有default语句，则将当前运行的groutine阻塞，并加入到当前所有channel的等待队列中去
+然后解锁所有channel，等待被唤醒
+此时如果有个channel可读或者可写ready了，则唤醒，并再次加锁所有channel
+遍历所有channel找到那个对应的channel和G，唤醒G，并将没有成功的G从所有channel的等待队列中移除
