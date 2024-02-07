@@ -138,7 +138,16 @@ countkey:countval
 如果user微服务，不冗余计数的话，查询一个人的粉丝列表，需要先到followservice, 然后查到id到userservice, 再到countservice，链路有三层，是否有链路过长的问题
 
 如果user微服务不冗余计数字段的话，如果计数微服务挂了，用户刷视频的时候就拿不到这些计数数据了，可以在user表冗余这些计数字段，每隔一段时间把异步把计数字段同步到user冗余的字段里？？？
+### Redis
+查看某个key的大小
+```
+memory usage mykey
+```
 
+set a 1
+大小为56B
+set b 123a
+大小为72B
 ### 压测
 grpc压测
 ghz
