@@ -148,6 +148,20 @@ set a 1
 大小为56B
 set b 123a
 大小为72B
+#### 空间优化
+采用string存，100w数据需要50MB, 1亿需要5.6GB, 1个string占用56B
+压测，redis 100w数据存string的情况下。开启100个goroutine，每个goroutine读请求1万次 key，100w并发读，耗时16-17s，QPS达到5.88-6.25w
+压测，redis 100w数据存string的情况下。开启100个goroutine，每个goroutine写incr 1万次 key，100w并发写，耗时16-17s，QPS达到5.88-6.25w
+
+采用hash的field val少于512时采用listpack存储的特性, 将100w数据分成3000个bucket，平均每个bucket存330个数据，每个bucket平均占用2.5KB，3000个桶大约占7MB。一亿数据占用700MB
+相当于节省了85%的内存占用
+压测，redis 100w数据存在hash分bucket的情况下。开启100个goroutine，每个goroutine请求1万次 key，100w并发读，耗时17-18s，QPS达到5.50-5.88w
+压测，redis 100w数据存在hash分bucket的情况下。开启100个goroutine，每个goroutine写incr求1万次 key，100w并发写，耗时17-18s，QPS达到5.50-5.88w
+
+读写性能为原来的94%，但空间却只为原来的12%
+
+ps：如果把100w数据分到1000个bucket，平均每个bucket 1000个field value，此时hash底层不会用listpack而是用hash存储，每个bucket平均占用60KB，1000个桶占用60MB，一亿数据占用6G，空间占用太过庞大
+分到100个bucket，平均每个bucket 10000个field，占用72KB，总共占用72MB，一亿数据7G
 ### 压测
 grpc压测
 ghz
