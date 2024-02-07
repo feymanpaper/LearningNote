@@ -143,7 +143,6 @@ countkey:countval
 ```
 memory usage mykey
 ```
-
 set a 1
 大小为56B
 set b 123a
