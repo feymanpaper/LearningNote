@@ -148,6 +148,7 @@ set a 1
 set b 123a
 大小为72B
 #### 空间优化
+https://www.freebuf.com/articles/database/367974.html
 采用string存，100w数据需要50MB, 1亿需要5.6GB, 1个string占用56B
 压测，redis 100w数据存string的情况下。开启100个goroutine，每个goroutine读请求1万次 key，100w并发读，耗时16-17s，QPS达到5.88-6.25w
 压测，redis 100w数据存string的情况下。开启100个goroutine，每个goroutine写incr 1万次 key，100w并发写，耗时16-17s，QPS达到5.88-6.25w
