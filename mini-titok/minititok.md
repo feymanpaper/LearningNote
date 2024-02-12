@@ -1,3 +1,5 @@
+api文档
+https://apifox.com/apidoc/shared-7b33652d-6080-41bb-a70e-7a165d55daae
 ### Go-zero
 #### Goctl
 生成model代码
