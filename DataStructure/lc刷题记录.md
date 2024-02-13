@@ -573,6 +573,11 @@ func bisearch(nums []int, tar int) int{
 
 1048. 最长字符串链
 
+序列dp
+139. 单词拆分
+32. 最长有效括号
+结合栈和dp
+
 
 线性dp
 2008. 出租车的最大盈利
