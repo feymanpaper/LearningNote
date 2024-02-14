@@ -173,8 +173,10 @@ https://leetcode.cn/problems/median-of-two-sorted-arrays/solutions/210764/di-k-x
 如何求两个正序数组中的第k个数？
 两个数组，大小分别为m, n
 每次从num1取第k/2个数a, 从num2去取k/2个数b
-如果a\<b
-那么比num1中比a大的数有m-k/2, num2中比a大的数有, n-k/2+1
+如果a\<b,
+那么比num1中比a大的数有m-k/2, num2中比a大的数有, n-k/2+1, 那么总共比a大的就有
+m+n-k+1个，这里面肯定包含第k个数, 因此可以直接去掉a及a之前的数
+如果a=b也满足上述情况
 ```go
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
     m:=len(nums1)
