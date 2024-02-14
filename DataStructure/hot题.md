@@ -168,5 +168,49 @@ func search(arr []int, target int) int {
 
 #### 难题
 4. 寻找两个正序数组的中位数
-
 https://leetcode.cn/problems/median-of-two-sorted-arrays/solutions/210764/di-k-xiao-shu-jie-fa-ni-zhen-de-dong-ma-by-geek-8m/?envType=study-plan-v2&envId=top-100-liked
+思路：转化为求两个正序数组中的第k个数， 折半删除
+如何求两个正序数组中的第k个数？
+两个数组，大小分别为m, n
+每次从num1取第k/2个数a, 从num2去取k/2个数b
+如果a\<b
+那么比num1中比a大的数有m-k/2, num2中比a大的数有, n-k/2+1
+```go
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+    m:=len(nums1)
+    n:=len(nums2)
+    k:=(m+n)/2
+    // 这里的第k是第中位数的数组的下标, 实际上第k个数是第k+1个
+    if (m+n)&1==0{
+        //偶数
+        return (findKth(nums1, nums2, 0, 0, k)+findKth(nums1, nums2, 0, 0, k+1))/2
+    }
+    return findKth(nums1, nums2, 0, 0, k+1)
+}
+
+// 求两个有序数组第k个数, k从1开始而不是0
+func findKth(nums1, nums2 []int, ast, bst, k int) float64{
+    if ast>=len(nums1){
+        return float64(nums2[bst+k-1])
+    }
+    if bst>=len(nums2){
+        return float64(nums1[ast+k-1])
+    }
+    if k==1{
+        return float64(min(nums1[ast], nums2[bst]))
+    }
+    midVal1:=math.MaxInt/2
+    midVal2:=math.MaxInt/2
+    if ast+k/2-1<len(nums1){
+        midVal1=nums1[ast+k/2-1]
+    }
+    if bst+k/2-1<len(nums2){
+        midVal2=nums2[bst+k/2-1]
+    }
+
+    if midVal1<midVal2{
+        return findKth(nums1, nums2, ast+k/2, bst, k-k/2)
+    }
+    return findKth(nums1, nums2, ast, bst+k/2, k-k/2)
+}
+```
