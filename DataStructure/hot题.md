@@ -323,6 +323,40 @@ func maxPathSum(root *TreeNode) int {
     return ans
 }
 ```
+#### 105. 从前序与中序遍历序列构造二叉树
+```go
+func buildTree(preorder []int, inorder []int) *TreeNode {
+    var build func(pl, pr, il, ir int) *TreeNode
+    build = func(pl, pr, il, ir int) *TreeNode{
+        if pl>=pr{
+            return nil
+        }
+        val:=preorder[pl]
+        root:=&TreeNode{
+            Val:val,
+        }
+        if pl+1==pr{
+            return root
+        }
+        iidx:=-1
+        for i:=il; i<ir; i++{
+            if inorder[i]==val{
+                iidx=i
+                break
+            }
+        }
+        //通过确定il, idx, ir的数量关系来计算下一次的pl, pr
+        root.Left=build(pl+1, pl+(iidx-il)+1, il, iidx)
+        root.Right=build(pl+(iidx-il)+1, pr, iidx+1, ir)
+        return root
+    }
+    return build(0, len(preorder), 0, len(inorder))
+}
+```
+
+### 链表
+#### 138. 随机链表的复制
+sol: 存一个哈希表，key是oldnode, val是newnode
 ### 技巧
 #### 31. 下一个排列
 https://leetcode.cn/problems/next-permutation/solutions/80560/xia-yi-ge-pai-lie-suan-fa-xiang-jie-si-lu-tui-dao-/?envType=study-plan-v2&envId=top-100-liked
