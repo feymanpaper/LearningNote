@@ -249,6 +249,54 @@ func trap(height []int) int {
 }
 ```
 
+### 单调栈
+#### 84. 柱状图中最大的矩形
+sol:方法一：暴力解法（超时）
+具体来说是：依次遍历柱形的高度，对于每一个高度分别向两边扩散，求出以当前高度为矩形的最大宽度多少
+O(n^2)时间，O(1)空间
+sol2:单调栈
+```go
+func largestRectangleArea(heights []int) int {
+    stk:=make([]int, 0)
+    n:=len(heights)
+    ans:=0
+    for i:=0; i<n; i++{
+        for len(stk)>0&&heights[i]<heights[stk[len(stk)-1]]{
+            end:=i
+            cur:=stk[len(stk)-1]
+            stk=stk[:len(stk)-1]
+            st:=-1
+            if len(stk)>0{
+                st=stk[len(stk)-1]
+            }else{
+	            //为空的话左边界为-1
+                st=-1
+            }
+            //宽度
+            w:=(end-st-1)
+            ans=max(ans, w*heights[cur])
+        }
+        stk=append(stk, i)
+    }
+    //后面栈中仍然可能存在元素, 可以推一个最小的进去求解
+    for len(stk)>0{
+	    //右边界为n
+        end:=n
+        cur:=stk[len(stk)-1]
+        stk=stk[:len(stk)-1]
+        st:=-1
+        if len(stk)>0{
+            st=stk[len(stk)-1]
+        }else{
+            st=-1
+        }
+        w:=end-st-1
+        ans=max(ans, w*heights[cur])
+    }
+    return ans
+}
+```
+
 ### 技巧
 #### 31. 下一个排列
 https://leetcode.cn/problems/next-permutation/solutions/80560/xia-yi-ge-pai-lie-suan-fa-xiang-jie-si-lu-tui-dao-/?envType=study-plan-v2&envId=top-100-liked
