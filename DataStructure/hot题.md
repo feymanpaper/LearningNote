@@ -217,6 +217,38 @@ func findKth(nums1, nums2 []int, ast, bst, k int) float64{
 }
 ```
 
+### 双指针
+#### 42. 接雨水
+https://leetcode.cn/problems/trapping-rain-water/solutions/1974340/zuo-liao-nbian-huan-bu-hui-yi-ge-shi-pin-ukwm/?envType=study-plan-v2&envId=top-100-liked
+sol1: 前后缀分解, 接到的雨水取决于min(左边最高, 右边最高)-h
+sol2:双指针, 前后缀分解的进阶，发现只需要维护双指针，p, q；pre, p表示之前的左边最高, q,suf表示右边的最高, 答案只取决于min(pre, suf)
+```go
+func trap(height []int) int {
+    n:=len(height)
+    p:=0
+    q:=n-1
+    pre:=0
+    suf:=0
+    ans:=0
+    //p==q会好一点，尽管当p==q时, 增量为0
+    for p<=q{
+        pre=max(pre, height[p])
+        suf=max(suf, height[q])
+        if pre<suf{
+            ans+=(pre-height[p])
+            p++
+        }else{
+            ans+=(suf-height[q])
+            q--
+        }
+        if p==q{
+            fmt.Println(p, " ", pre, " ", suf, " ", ans)
+        }
+    }
+    return ans
+}
+```
+
 ### 技巧
 #### 31. 下一个排列
 https://leetcode.cn/problems/next-permutation/solutions/80560/xia-yi-ge-pai-lie-suan-fa-xiang-jie-si-lu-tui-dao-/?envType=study-plan-v2&envId=top-100-liked
