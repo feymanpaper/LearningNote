@@ -358,9 +358,115 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 #### 138. 随机链表的复制
 sol: 存一个哈希表，key是oldnode, val是newnode
 ### 技巧
+
 #### 31. 下一个排列
 https://leetcode.cn/problems/next-permutation/solutions/80560/xia-yi-ge-pai-lie-suan-fa-xiang-jie-si-lu-tui-dao-/?envType=study-plan-v2&envId=top-100-liked
 我们还希望下一个数 增加的幅度尽可能的小，这样才满足“下一个排列与当前排列紧邻“的要求。为了满足这个要求，我们需要：
 1.在 尽可能靠右的低位 进行交换，需要 从后向前 查找
 2.将一个 尽可能小的「大数」 与前面的「小数」交换。比如 123465，下一个排列应该把 5 和 4 交换而不是把 6 和 4 交换
 3.将「大数」换到前面后，需要将「大数」后面的所有数 重置为升序，升序排列就是最小的排列。以 123465 为例：首先按照上一步，交换 5 和 4，得到 123564；然后需要将 5 之后的数重置为升序，得到 123546。显然 123546 比 123564 更小，123546 就是 123465 的下一个排列
+### 设计数据结构
+#### LRU
+```go
+type Node struct {
+	pre  *Node
+	next *Node
+	key  int
+	val  int
+}
+
+type List struct {
+	head *Node
+	tail *Node
+}
+type LRUCache struct {
+	cap  int
+	mp   map[int]*Node
+	list *List
+	num  int
+}
+
+func Constructor(capacity int) LRUCache {
+	lru := LRUCache{
+		cap: capacity,
+		mp:  make(map[int]*Node),
+		list: &List{
+			head: &Node{
+				pre:  nil,
+				next: nil,
+				val:  -1,
+				key:  -1,
+			},
+			tail: &Node{
+				pre:  nil,
+				next: nil,
+				key:  -1,
+				val:  0,
+			},
+		},
+	}
+	lru.list.head.next = lru.list.tail
+	lru.list.tail.pre = lru.list.head
+	return lru
+}
+
+func (l *List) PushToHead(cur *Node) {
+	cur.next = l.head.next
+	cur.pre = l.head
+	l.head.next.pre = cur
+	l.head.next = cur
+}
+
+func (l *List) MoveToHead(cur *Node) {
+	cur.pre.next = cur.next
+	cur.next.pre = cur.pre
+	//
+	cur.next = l.head.next
+	cur.pre = l.head
+	l.head.next.pre = cur
+	l.head.next = cur
+}
+
+func (l *List) RemoveLast() int {
+	last := l.tail.pre
+	last.pre.next = last.next
+	last.next.pre = last.pre
+	last.next = nil
+	last.pre = nil
+	return last.val
+}
+
+func (this *LRUCache) Get(key int) int {
+	v, ok := this.mp[key]
+	if !ok {
+		return -1
+	}
+	this.list.MoveToHead(v)
+	return v.val
+}
+
+func (this *LRUCache) Put(key int, value int) {
+	v, ok := this.mp[key]
+	if ok {
+		this.mp[key].val = value
+		this.list.MoveToHead(v)
+		return
+	}
+	// 不存在
+	node := &Node{
+		pre:  nil,
+		next: nil,
+		key:  key,
+		val:  value,
+	}
+	this.list.PushToHead(node)
+	this.mp[key] = node
+	this.num++
+	if this.num > this.cap {
+		lastkey := this.list.tail.pre.key
+		this.list.RemoveLast()
+		delete(this.mp, lastkey)
+		this.num--
+	}
+}
+```
