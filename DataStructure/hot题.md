@@ -353,7 +353,37 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
     return build(0, len(preorder), 0, len(inorder))
 }
 ```
-
+437. 路径总和 III
+回溯+前缀和哈希
+```go
+func pathSum(root *TreeNode, targetSum int) int {
+    sum:=0
+    mp:=make(map[int]int)
+    //cur-pre=0时，默认有一条路径
+    mp[0]=1
+    ans:=0
+    var backtrack func(root *TreeNode)
+    backtrack = func(root *TreeNode){
+        if root==nil{
+            return 
+        }
+        sum+=root.Val
+        //此处更新答案
+        ans+=mp[sum-targetSum]
+        mp[sum]++
+        backtrack(root.Left)
+        backtrack(root.Right)
+        mp[sum]--
+        sum-=root.Val
+    }
+    backtrack(root)
+    return ans
+}
+```
+113. 路径总和 II
+回溯
+112. 路径总和
+回溯
 ### 链表
 #### 138. 随机链表的复制
 sol: 存一个哈希表，key是oldnode, val是newnode
@@ -367,6 +397,7 @@ https://leetcode.cn/problems/next-permutation/solutions/80560/xia-yi-ge-pai-lie-
 3.将「大数」换到前面后，需要将「大数」后面的所有数 重置为升序，升序排列就是最小的排列。以 123465 为例：首先按照上一步，交换 5 和 4，得到 123564；然后需要将 5 之后的数重置为升序，得到 123546。显然 123546 比 123564 更小，123546 就是 123465 的下一个排列
 ### 设计数据结构
 #### LRU
+自己实现双向链表
 ```go
 type Node struct {
 	pre  *Node
@@ -468,5 +499,56 @@ func (this *LRUCache) Put(key int, value int) {
 		delete(this.mp, lastkey)
 		this.num--
 	}
+}
+```
+go自带的list实现
+```go
+type Pair struct{
+    key int
+    val int
+}
+type LRUCache struct {
+    mp map[int]*list.Element
+    l *list.List
+    cap int
+}
+
+
+func Constructor(capacity int) LRUCache {
+    return LRUCache{
+        mp:make(map[int]*list.Element),
+        l:list.New(),
+        cap:capacity,
+    }
+}
+
+
+func (this *LRUCache) Get(key int) int {
+    v,ok:=this.mp[key]
+    if !ok{
+        return -1
+    }
+    this.l.MoveToFront(v)
+    return v.Value.(Pair).val
+}
+
+
+func (this *LRUCache) Put(key int, value int)  {
+    node,ok:=this.mp[key]
+    if ok{
+        node.Value=Pair{
+            key:key,
+            val:value,
+        }
+        this.l.MoveToFront(node)
+        return 
+    }
+    node=this.l.PushFront(Pair{key, value})
+    this.mp[key]=node
+    if len(this.mp)>this.cap{
+        lastv:=this.l.Remove(this.l.Back())
+        delete(this.mp, lastv.(Pair).key)
+    }
+    return 
 }
 ```
