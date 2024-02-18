@@ -297,6 +297,32 @@ func largestRectangleArea(heights []int) int {
 }
 ```
 
+### 二叉树
+#### 124. 二叉树中的最大路径和
+当前root的最大路径和取决于max(lsum, 0) +max(rsum, 0)+root.Val, 返回值是max(max(lsum, 0), max(rsum, 0))+root.Val
+```go
+func maxPathSum(root *TreeNode) int {
+    ans:=math.MinInt/2
+    var getSum func(root *TreeNode) int
+    getSum = func(root *TreeNode) int{
+        if root==nil{
+            return 0
+        }
+        lsum:=getSum(root.Left)
+        if lsum<0{
+            lsum=0
+        }
+        rsum:=getSum(root.Right)
+        if rsum<0{
+            rsum=0
+        }
+        ans=max(ans, lsum+rsum+root.Val)
+        return max(lsum, rsum)+root.Val
+    }
+    getSum(root)
+    return ans
+}
+```
 ### 技巧
 #### 31. 下一个排列
 https://leetcode.cn/problems/next-permutation/solutions/80560/xia-yi-ge-pai-lie-suan-fa-xiang-jie-si-lu-tui-dao-/?envType=study-plan-v2&envId=top-100-liked
