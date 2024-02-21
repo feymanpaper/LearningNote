@@ -408,6 +408,10 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
     return backtrack(head)
 }
 ```
+#### 83. 删除排序链表中的重复元素
+
+#### 82. 删除排序链表中的重复元素 II
+
 ### 技巧
 
 #### 31. 下一个排列
