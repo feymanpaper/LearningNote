@@ -8,6 +8,7 @@ https://leetcode.cn/circle/discuss/qiAgHn/
 dp\[i]\[0]表示第i天不持有股票
 dp\[i]\[1]表示第i天持有股票
 121. 买卖股票的最佳时机
+188的k=1版本
 ```go
 func maxProfit(prices []int) int {
     n:=len(prices)
@@ -22,6 +23,7 @@ func maxProfit(prices []int) int {
 }
 ```
 122. 买卖股票的最佳时机 II
+188的k=无穷大版本
 ```go
 func maxProfit(prices []int) int {
     n:=len(prices)
@@ -33,6 +35,69 @@ func maxProfit(prices []int) int {
         dp[i&1][1]=max(dp[(i-1)&1][1], dp[(i-1)&1][0]-prices[i])
     }
     return dp[(n-1)&1][0]
+}
+```
+123. 买卖股票的最佳时机 III
+sol: 188题目 k=2版本
+188. 买卖股票的最佳时机 IV
+通解问题
+sol1: 时间复杂度O(nk), 空间复杂度O(nk)
+```go
+func maxProfit(k int, prices []int) int {
+    n:=len(prices)
+    dp:=make([][][]int, n)
+    for i:=0; i<n; i++{
+        dp[i]=make([][]int, k+1)
+        for j:=0; j<=k; j++{
+            dp[i][j]=make([]int, 2)
+        }
+    }
+    dp[0][0][1]=-math.MinInt/2
+    for i:=1; i<=k; i++{
+        dp[0][i][1]=-prices[0]
+    }
+    for i:=1; i<n; i++{
+        for j:=1; j<=k; j++{
+            dp[i][j][0]=max(dp[i-1][j][0],dp[i-1][j][1]+prices[i])
+            dp[i][j][1]=max(dp[i-1][j][1],dp[i-1][j-1][0]-prices[i])
+        }
+    }
+    return dp[n-1][k][0]
+}
+```
+sol2:优化空间，注意到(i,k)依赖于(i-1,k), (i-1,k-1)，可以优化空间O(k)
+```go
+func maxProfit(k int, prices []int) int {
+    n:=len(prices)
+    dp:=make([][]int, k+1)
+    for i:=0; i<=k; i++{
+        dp[i]=make([]int, 2)
+    }
+    dp[0][1]=-math.MinInt/2
+    for i:=1; i<=k; i++{
+        dp[i][1]=-prices[0]
+    }
+    for i:=1; i<n; i++{
+        for j:=k; j>=1; j--{
+            dp[j][0]=max(dp[j][0],dp[j][1]+prices[i])
+            dp[j][1]=max(dp[j][1],dp[j-1][0]-prices[i])
+        }
+    }
+    return dp[k][0]
+}
+```
+714. 买卖股票的最佳时机含手续费
+sol: k =无穷大带手续费，只需要在买的时候算手续费就好
+```go
+func maxProfit(prices []int, fee int) int {
+    n:=len(prices)
+    dp:=make([][2]int, n)
+    dp[0][1]=-prices[0]-fee
+    for i:=1; i<n; i++{
+        dp[i][0]=max(dp[i-1][0], dp[i-1][1]+prices[i])
+        dp[i][1]=max(dp[i-1][1], dp[i-1][0]-prices[i]-fee)
+    }
+    return dp[n-1][0]
 }
 ```
 ### 二分
