@@ -41,6 +41,7 @@ func maxProfit(prices []int) int {
 sol: 188题目 k=2版本
 188. 买卖股票的最佳时机 IV
 通解问题
+需要再增加一个状态k记录最大交易次数
 sol1: 时间复杂度O(nk), 空间复杂度O(nk)
 ```go
 func maxProfit(k int, prices []int) int {
