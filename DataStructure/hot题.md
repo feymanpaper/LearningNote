@@ -387,6 +387,27 @@ func pathSum(root *TreeNode, targetSum int) int {
 ### 链表
 #### 138. 随机链表的复制
 sol: 存一个哈希表，key是oldnode, val是newnode
+#### 19. 删除链表的倒数第 N 个结点
+sol1: 迭代：快慢指针
+sol2:递归: 
+```go
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+    cnt:=0
+    var backtrack func(head *ListNode) *ListNode
+    backtrack = func(head *ListNode) *ListNode{
+        if head==nil{
+            return head
+        }
+        head.Next=backtrack(head.Next)
+        cnt++
+        if cnt==n{
+            return head.Next
+        }
+        return head
+    }
+    return backtrack(head)
+}
+```
 ### 技巧
 
 #### 31. 下一个排列
