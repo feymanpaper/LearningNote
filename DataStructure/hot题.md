@@ -2,7 +2,39 @@
 #### 字符串dp
 1143. 最长公共子序列
 72. 编辑距离
-
+#### 背包问题
+#### 股票问题
+https://leetcode.cn/circle/discuss/qiAgHn/
+dp\[i]\[0]表示第i天不持有股票
+dp\[i]\[1]表示第i天持有股票
+121. 买卖股票的最佳时机
+```go
+func maxProfit(prices []int) int {
+    n:=len(prices)
+    dp:=[2][2]int{}
+    dp[0][0]=0
+    dp[0][1]=-prices[0]
+    for i:=1; i<n; i++{
+        dp[i&1][0]=max(dp[(i-1)&1][1]+prices[i], dp[(i-1)&1][0])
+        dp[i&1][1]=max(dp[(i-1)&1][1], -prices[i])
+    }
+    return dp[(n-1)&1][0]
+}
+```
+122. 买卖股票的最佳时机 II
+```go
+func maxProfit(prices []int) int {
+    n:=len(prices)
+    dp:=[2][2]int{}
+    dp[0][0]=0
+    dp[0][1]=-prices[0]
+    for i:=1; i<n; i++{
+        dp[i&1][0]=max(dp[(i-1)&1][0],dp[(i-1)&1][1]+prices[i])
+        dp[i&1][1]=max(dp[(i-1)&1][1], dp[(i-1)&1][0]-prices[i])
+    }
+    return dp[(n-1)&1][0]
+}
+```
 ### 二分
 #### 搜索旋转数组系列
 该系列比较难抽象成红蓝二分，这里给的抽象是l及左边都不满足条件, r及右边都不满足条件
@@ -409,8 +441,52 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 }
 ```
 #### 83. 删除排序链表中的重复元素
-
+```go
+func deleteDuplicates(head *ListNode) *ListNode {
+    dummy:=&ListNode{}
+    dummy.Next=head
+    pre:=dummy
+    cur:=head
+    for cur!=nil{
+        for cur.Next!=nil&&cur.Val==cur.Next.Val{
+            cur=cur.Next
+        }
+        if pre.Next==cur{
+            pre=cur
+        }else{
+            pre=pre.Next
+            pre.Next=cur.Next
+            cur.Next=nil
+            cur=pre
+        }
+        cur=cur.Next
+    }
+    return dummy.Next
+}
+```
 #### 82. 删除排序链表中的重复元素 II
+```go
+func deleteDuplicates(head *ListNode) *ListNode {
+    dummy:=&ListNode{}
+    dummy.Next=head
+    pre:=dummy
+    cur:=head
+    for cur!=nil{
+        for cur.Next!=nil&&cur.Val==cur.Next.Val{
+            cur=cur.Next
+        }
+        if pre.Next==cur{
+            pre=cur
+        }else{
+            pre.Next=cur.Next
+            cur.Next=nil
+            cur=pre
+        }
+        cur=cur.Next
+    }
+    return dummy.Next
+}
+```
 
 ### 技巧
 
