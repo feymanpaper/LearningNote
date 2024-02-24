@@ -102,6 +102,71 @@ func maxProfit(prices []int, fee int) int {
 }
 ```
 #### 打家劫舍问题 
+198. 打家劫舍
+```go
+func rob(nums []int) int {
+    n:=len(nums)
+    dp:=make([][2]int, n)
+    dp[0][0]=0
+    dp[0][1]=nums[0]
+    for i:=1; i<n; i++{
+        dp[i][0]=max(dp[i-1][0], dp[i-1][1])
+        dp[i][1]=max(dp[i-1][0]+nums[i])
+    }
+    ans:=max(dp[n-1][0], dp[n-1][1])
+    //打印路径
+    target:=ans
+    path:=make([]int, 0)
+    for i:=n-1; i>=0; i--{
+        if dp[i][1]==target{
+            path=append(path, i)
+            target-=nums[i]
+        }
+    }
+    fmt.Println(path)
+    return ans 
+}
+```
+213. 打家劫舍 II
+环形的房子，则答案为两者取其一
+```go
+func rob(nums []int) int {
+    n:=len(nums)
+    if n<=1{
+        return nums[0]
+    }
+    return max(robsin(nums, 0, n-2), robsin(nums, 1, n-1))
+}
+
+func robsin(nums []int, st, end int) int{
+    dp:=make([][2]int, end+1)
+    dp[st][0]=0
+    dp[st][1]=nums[st]
+    for i:=st+1; i<=end; i++{
+        dp[i][0]=max(dp[i-1][0], dp[i-1][1])
+        dp[i][1]=max(dp[i-1][0]+nums[i])
+    }
+    return max(dp[end][0], dp[end][1])
+}
+```
+337. 打家劫舍 III
+树形dp
+```go
+func rob(root *TreeNode) int {
+    return max(subrob(root))
+}
+
+func subrob(root *TreeNode) (int, int){
+    if root==nil{
+        return 0,0
+    }
+    lrob,lnot:=subrob(root.Left)
+    rrob,rnot:=subrob(root.Right)
+    rob:=root.Val+lnot+rnot
+    not:=max(lnot, lrob)+max(rnot, rrob)
+    return rob, not
+}
+```
 ### 二分
 #### 搜索旋转数组系列
 该系列比较难抽象成红蓝二分，这里给的抽象是l及左边都不满足条件, r及右边都不满足条件
