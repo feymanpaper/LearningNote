@@ -619,7 +619,81 @@ func deleteDuplicates(head *ListNode) *ListNode {
     return dummy.Next
 }
 ```
+#### 反转链表系列
+206. 反转链表
+```go
+func reverse(head *ListNode) *ListNode{
+    if head==nil||head.Next==nil{
+        return head
+    }
+    last:=reverse(head.Next)
+    head.Next.Next=head
+    head.Next=nil
+    return last
+}
+```
+进阶题: 反转链表前 N 个节点
+sol: 后继怎么存是难点
+```go
+// 反转以 head 为起点的 n 个节点，返回新的头结点
+func reverseN(head *ListNode, n int) *ListNode {
+	if head==nil||head.Next==nil{
+		return head
+	}
+    if n == 1 {
+        // 记录第 n + 1 个节点
+        successor = head.Next
+        return head
+    }
+    // 以 head.Next 为起点，需要反转前 n - 1 个节点
+    last := reverseN(head.Next, n-1)
+    suc:=head.Next.Next
+    head.Next.Next = head
+    head.Next = suc
+    return last
+}
+```
+92. 反转链表 II, 反转left到right的节点
+sol: 先实现反转前N个节点, 然后递归处理, 需要存后继
+```go
+func reverseBetween(head *ListNode, left int, right int) *ListNode {
+    if left==1{
+        return reverseN(head, right)
+    }
+    last:=reverseBetween(head.Next, left-1,right-1)
+    head.Next=last
+    return head
+}
+```
+25. K 个一组翻转链表
+sol: 先实现反转前N个节点, 然后递归反转k个节点, 不需要存后继
+```go
+func reverseN(head *ListNode, n int) *ListNode{
+    if n==1{
+        return head
+    }
+    last:=reverseN(head.Next, n-1)
+    head.Next.Next=head
+    head.Next=nil
+    return last
+}
 
+func reverseKGroup(head *ListNode, k int) *ListNode {
+    if head==nil{
+        return nil
+    }
+    cur:=head
+    for i:=0; i<k; i++{
+        if cur==nil{
+            return head
+        }
+        cur=cur.Next
+    }
+    last:=reverseN(head, k)
+    head.Next=reverseKGroup(cur, k)
+    return last
+}
+```
 ### 技巧
 
 #### 31. 下一个排列
