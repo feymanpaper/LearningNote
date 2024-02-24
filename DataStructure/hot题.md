@@ -744,3 +744,35 @@ func reverseWords(s string) string {
     return ans[0:len(ans)-1]
 }
 ```
+
+### 数学
+#### 470. 用 Rand7() 实现 Rand10()
+题解:
+https://leetcode.cn/problems/implement-rand10-using-rand7/solutions/427572/cong-pao-ying-bi-kai-shi-xun-xu-jian-jin-ba-zhe-da/
+rand7能得到 \[0,6], 两次得到\[0,48]
+如果满足数位于\[1,10]则成功，否则重试
+优化: 1,10-11,20-21,30-31,40都可以利用上，取模
+```go
+func randMToRandN() int{
+    k:=0
+    num:=1
+    for num-1<N{
+        k++
+        num=num*M
+    }
+    nn=1
+    for nn*N<num{
+        nn=nn*N
+    }
+    for{
+        x:=0
+        for i:=0; i<k; i++{
+            x=x*M+randM()-1
+        }
+        if x>=1&&x<=nn{
+            return x%N+1
+        }
+    }
+    return -1
+}
+```
