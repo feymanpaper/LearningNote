@@ -719,3 +719,28 @@ func (this *LRUCache) Put(key int, value int)  {
     return 
 }
 ```
+
+### 字符串
+#### 151. 反转字符串中的单词
+逆序双指针
+```go
+func reverseWords(s string) string {
+    n:=len(s)
+    p:=n-1
+    ans:=""
+    q:=p
+    for p>=0{
+        for p>=0&&s[p]==' '{
+            p--
+        }
+        q=p
+        for p>=0&&s[p]!=' '{
+            p--
+        }
+        if p!=q{
+            ans+=s[p+1:q+1]+" "
+        }
+    }
+    return ans[0:len(ans)-1]
+}
+```
