@@ -380,7 +380,12 @@ func findKth(nums1, nums2 []int, ast, bst, k int) float64{
     return findKth(nums1, nums2, ast, bst+k/2, k-k/2)
 }
 ```
-
+#### 二维二分
+240. 搜索二维矩阵 II
+从右上角开始O(m+n)
+74. 搜索二维矩阵
+sol1:从右上角开始O(m+n)，没有利用性质
+sol2:两次二分，先二分行，再二分列
 ### 双指针
 #### 42. 接雨水
 https://leetcode.cn/problems/trapping-rain-water/solutions/1974340/zuo-liao-nbian-huan-bu-hui-yi-ge-shi-pin-ukwm/?envType=study-plan-v2&envId=top-100-liked
