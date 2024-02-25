@@ -785,6 +785,118 @@ https://leetcode.cn/problems/next-permutation/solutions/80560/xia-yi-ge-pai-lie-
 3.将「大数」换到前面后，需要将「大数」后面的所有数 重置为升序，升序排列就是最小的排列。以 123465 为例：首先按照上一步，交换 5 和 4，得到 123564；然后需要将 5 之后的数重置为升序，得到 123546。显然 123546 比 123564 更小，123546 就是 123465 的下一个排列
 #### 179. 最大数
 sol:先把所有int转成str，排序的时候比较拼接的字符串大小, 最后需要特判nums全为0的情况
+#### 128. 最长连续序列
+sol1:排序+dp
+```go
+func longestConsecutive(nums []int) int {
+    n:=len(nums)
+    if len(nums)<=0{
+        return 0
+    }
+    sort.Slice(nums, func(i, j int) bool{
+        return nums[i]<nums[j]
+    })
+    dp:=make([]int, n)
+    dp[0]=1
+    ans:=dp[0]
+    for i:=1; i<n; i++{
+        dp[i]=1
+        if nums[i]==nums[i-1]+1{
+            dp[i]=dp[i-1]+1
+            ans=max(ans, dp[i])
+        }else if nums[i]==nums[i-1]{
+            dp[i]=dp[i-1]
+        }
+    }
+    return ans
+}
+```
+sol2:并查集
+```go
+type USet struct{
+    count int //连通分量的个数
+    par []int //记录父亲节点
+    size []int //某个节点的儿子个数
+}
+func NewUSet(n int) USet{
+    par:=make([]int, n)
+    for i:=0; i<n; i++{
+        par[i]=i
+    }
+    sz:=make([]int, n)
+    for i:=0; i<n; i++{
+        sz[i]=1
+    }
+    return USet{
+        count:n,
+        par:par,
+        size:sz, 
+    }
+}
+func (u *USet) find(x int) int{
+    if u.par[x]!=x{
+        u.par[x]=u.find(u.par[x])
+    }
+    return u.par[x]
+}
+func (u *USet) Union(x, y int){
+    px:=u.find(x)
+    py:=u.find(y)
+    if px==py{
+        return
+    }
+    u.par[px]=py
+    u.size[py]+=u.size[px]
+    u.count--
+    return 
+}
+func (u *USet) GetMaxConSize() int{
+    maxAns:=0
+    for i:=0; i<len(u.par); i++{
+        if i==u.par[i]{
+            maxAns=max(maxAns, u.size[i])
+        }
+    }
+    return maxAns
+}
+func longestConsecutive(nums []int) int {
+    n:=len(nums)
+    mp:=make(map[int]int)
+    uset:=NewUSet(n)
+    for i,x:=range nums{
+        if _,ok:=mp[x];ok{
+            continue
+        }
+        if _,ok:=mp[x-1];ok{
+            uset.Union(i, mp[x-1])
+        }
+        if _,ok:=mp[x+1];ok{
+            uset.Union(i, mp[x+1])
+        }
+        mp[x]=i
+    }
+    return uset.GetMaxConSize()
+}
+```
+sol3:哈希
+```go
+func longestConsecutive(nums []int) int {
+    set:=make(map[int]bool)
+    for _,x:=range nums{
+        set[x]=true
+    }
+    ans:=0
+    for _,x:=range nums{
+        if set[x-1]{
+            continue
+        }
+        idx:=x
+        for ;set[idx];idx++{}
+        ans=max(ans, idx-x)
+    }
+    return ans
+}
+```
 ### 设计数据结构
 #### LRU
 自己实现双向链表
