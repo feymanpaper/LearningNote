@@ -467,6 +467,75 @@ func largestRectangleArea(heights []int) int {
 ```
 
 ### 二叉树
+#### 前中后序遍历
+迭代法:
+https://www.bilibili.com/video/BV1RP4y1G79Z/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=108d23f95683578313bdaf5d938b5b3d
+本质都是先遍历根, 具体的时机不一样
+前序, 在向左之前do, 也就是将当前结点push前
+```go
+func preorderTraversal(root *TreeNode) []int {
+    stk:=make([]*TreeNode, 0)
+    ans:=make([]int, 0)
+    cur:=root
+    for cur!=nil||len(stk)>0{
+        for cur!=nil{
+            //do
+            ans=append(ans, cur.Val)
+            stk=append(stk, cur)
+            cur=cur.Left
+        }
+        top:=stk[len(stk)-1]
+        stk=stk[:len(stk)-1]
+        cur=top.Right
+    }
+    return ans
+}
+```
+中序,在向右之前do, 也就是将当前结点pop之后但是向右之前(和前序差不多)
+```go
+func inorderTraversal(root *TreeNode) []int {
+    ans:=make([]int, 0)
+    stk:=make([]*TreeNode, 0)
+    cur:=root
+    for cur!=nil||len(stk)>0{
+        for cur!=nil{
+            stk=append(stk, cur)
+            cur=cur.Left
+        }
+        top:=stk[len(stk)-1]
+        stk=stk[:len(stk)-1]
+        //do
+        ans=append(ans, top.Val)
+        cur=top.Right
+    }
+    return ans
+}
+```
+后序,向右之后do, 因此需要一个指针指向上次遍历过的节点
+```go
+func postorderTraversal(root *TreeNode) []int {
+    ans:=make([]int, 0)
+    stk:=make([]*TreeNode, 0)
+    var pre *TreeNode
+    cur:=root
+    for cur!=nil||len(stk)>0{
+        for cur!=nil{
+            stk=append(stk, cur)
+            cur=cur.Left
+        }
+        top:=stk[len(stk)-1]
+        if top.Right!=nil&&top.Right!=pre{
+            cur=top.Right
+        }else{
+            //do
+            ans=append(ans, top.Val)
+            pre=top
+            stk=stk[:len(stk)-1]
+        }
+    }
+    return ans
+}
+```
 #### 124. 二叉树中的最大路径和
 当前root的最大路径和取决于max(lsum, 0) +max(rsum, 0)+root.Val, 返回值是max(max(lsum, 0), max(rsum, 0))+root.Val
 ```go
