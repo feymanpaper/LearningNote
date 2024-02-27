@@ -222,6 +222,13 @@ TODO：加一个实时排行榜
 前几个是热度（点赞数）最高的，这几个应该是没做分页直接拿的、后面几个按时间从新到日来展示（按时问做分 页由于时问不会变，所以完全没有重复或丢失的问题）
 https://blog.csdn.net/qq_24664053/article/details/93197413
 
+本地cache选型
+go-cache锁的粒度太大，没有分片, 锁整个map, 且没有对gc优化
+bigcache很好，但是没有支持getandset
+freecache很好,  可以通过update支持getandset
+最终选择了freecache
+![](Pasted%20image%2020240227163659.png)
+
 ### 参考资料 
 go-zero进行RPC调用、错误处理、JWT鉴权
 https://juejin.cn/post/7272581426331254839#heading-10
