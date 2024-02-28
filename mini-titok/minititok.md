@@ -164,6 +164,26 @@ https://www.freebuf.com/articles/database/367974.html
 
 ps：如果把100w数据分到1000个bucket，平均每个bucket 1000个field value，此时hash底层不会用listpack而是用hash存储，每个bucket平均占用60KB，1000个桶占用60MB，一亿数据占用6G，空间占用太过庞大
 分到100个bucket，平均每个bucket 10000个field，占用72KB，总共占用72MB，一亿数据7G
+
+RPC接口压测发现QPS在9000
+
+#### 本地缓存优化
+用freecache, 粉丝数和点赞数入本地缓存，然后定时把本地缓存的计数写入redis
+分段锁+zerogc
+
+压测之后发现QPS在9000，没有太大变化。感觉性能瓶颈不在redis
+对比了原生RPC测试单机能做到7W QPS，而go-zero zrpc单机测试仅有7000多QPS
+压测脚本和文章
+https://github.com/rpcxio/rpcx-benchmark
+https://colobu.com/2022/07/31/2022-rpc-frameworks-benchmarks/
+
+本地缓存选型:见下面
+https://pandaychen.github.io/2020/03/03/BIGCACHE-ANALYSIS/
+https://www.cyhone.com/articles/bigcache/
+https://zhuanlan.zhihu.com/p/487455942
+https://juejin.cn/post/7072121084136882183
+https://mp.weixin.qq.com/s/4ufuA3n9aaFcQ9zDItUHaQ
+
 ### 压测
 grpc压测
 ghz
