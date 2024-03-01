@@ -418,7 +418,7 @@ func trap(height []int) int {
 }
 ```
 
-### 单调栈
+### 单调栈/栈模拟
 #### 84. 柱状图中最大的矩形
 sol:方法一：暴力解法（超时）
 具体来说是：依次遍历柱形的高度，对于每一个高度分别向两边扩散，求出以当前高度为矩形的最大宽度多少
@@ -463,6 +463,59 @@ func largestRectangleArea(heights []int) int {
         ans=max(ans, w*heights[cur])
     }
     return ans
+}
+```
+#### 计算器
+224. 基本计算器（困难）
+227. 基本计算器II（中等）
+https://leetcode.cn/problems/basic-calculator-ii/solutions/2099855/labuladong-ru-he-shi-xian-yi-ge-ji-suan-oh6jc/
+```go
+func calculate(s string) int {
+    n:=len(s)
+    index:=0
+    var dfs func() int
+    dfs = func() int{
+        var presig byte ='+'
+        stk:=make([]int, 0)
+        num:=0
+        for index<n{
+            c:=s[index]
+            index++
+            if c>='0'&&c<='9'{
+                num=num*10+int(c-'0')
+            }
+            if c=='('{
+                num=dfs()
+            }
+            if (!(c>='0'&&c<='9')&&c!=' ')||index==n{
+                if presig=='+'{
+                    stk=append(stk, num)
+                }else if presig=='-'{
+                    stk=append(stk, -num)
+                }else if presig=='*'{
+                    top:=stk[len(stk)-1]
+                    stk=stk[:len(stk)-1]
+                    stk=append(stk, top*num)
+                }else if presig=='/'{
+                    top:=stk[len(stk)-1]
+                    stk=stk[:len(stk)-1]
+                    stk=append(stk, top/num)
+                }
+                num=0
+                presig=byte(c)
+            }
+            if c==')'{
+                break
+            }
+        }
+        ans:=0
+        for len(stk)>0{
+            ans+=stk[len(stk)-1]
+            stk=stk[:len(stk)-1]
+        }
+        return ans
+    }
+    return dfs()
 }
 ```
 
