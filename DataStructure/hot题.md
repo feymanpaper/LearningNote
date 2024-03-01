@@ -465,7 +465,7 @@ func largestRectangleArea(heights []int) int {
     return ans
 }
 ```
-#### 计算器
+#### 栈模拟
 224. 基本计算器（困难）
 227. 基本计算器II（中等）
 https://leetcode.cn/problems/basic-calculator-ii/solutions/2099855/labuladong-ru-he-shi-xian-yi-ge-ji-suan-oh6jc/
@@ -516,6 +516,53 @@ func calculate(s string) int {
         return ans
     }
     return dfs()
+}
+```
+394. 字符串解码
+```go
+func decodeString(s string) string {
+    n:=len(s)
+    num:=0
+    ans:=""
+    stk:=make([]string, 0)
+    nstk:=make([]int, 0)
+    for i:=0; i<n; i++{
+        c:=s[i]
+        if c>='0'&&c<='9'{
+            num=num*10+int(s[i]-'0')
+        }else if c=='['{
+            nstk=append(nstk, num)
+            stk=append(stk, string(c))
+            num=0
+        }else if c==']'{
+            temp:=""
+            //注意此刻要反转
+            for len(stk)>0&&stk[len(stk)-1]!="["{
+                temp+=reverse(stk[len(stk)-1])
+                stk=stk[:len(stk)-1]
+            }
+            stk=stk[:len(stk)-1]
+            tempnum:=nstk[len(nstk)-1]
+            nstk=nstk[:len(nstk)-1]
+            //再反转
+            stk=append(stk, strings.Repeat(reverse(temp), tempnum))
+        }else{
+            stk=append(stk, string(c))
+        }
+    }
+    for i:=0; i<len(stk); i++{
+        ans+=stk[i]
+    }
+    return ans
+}
+
+func reverse(s string) string{
+    t:=[]byte(s)
+    n:=len(t)
+    for i:=0; i<n/2; i++{
+        t[i],t[n-1-i]=t[n-1-i],t[i]
+    }
+    return string(t)
 }
 ```
 
