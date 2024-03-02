@@ -1105,56 +1105,150 @@ func (this *LRUCache) Put(key int, value int) {
 ```
 go自带的list实现
 ```go
-type Pair struct{
+type entry struct{
     key int
     val int
 }
+
 type LRUCache struct {
-    mp map[int]*list.Element
-    l *list.List
+    keyToNode map[int]*list.Element
+    NodeList *list.List
     cap int
 }
 
 
 func Constructor(capacity int) LRUCache {
     return LRUCache{
-        mp:make(map[int]*list.Element),
-        l:list.New(),
+        keyToNode:make(map[int]*list.Element),
+        NodeList:list.New(),
         cap:capacity,
     }
 }
 
 
-func (this *LRUCache) Get(key int) int {
-    v,ok:=this.mp[key]
+func (l *LRUCache) Get(key int) int {
+    v,ok:= l.keyToNode[key]
     if !ok{
         return -1
     }
-    this.l.MoveToFront(v)
-    return v.Value.(Pair).val
+    l.NodeList.MoveToFront(v)
+    return v.Value.(entry).val
 }
 
 
-func (this *LRUCache) Put(key int, value int)  {
-    node,ok:=this.mp[key]
+func (l *LRUCache) Put(key int, value int)  {
+    v,ok:=l.keyToNode[key]
     if ok{
-        node.Value=Pair{
+        v.Value=entry{
             key:key,
             val:value,
         }
-        this.l.MoveToFront(node)
+        l.NodeList.MoveToFront(v)
         return 
     }
-    node=this.l.PushFront(Pair{key, value})
-    this.mp[key]=node
-    if len(this.mp)>this.cap{
-        lastv:=this.l.Remove(this.l.Back())
-        delete(this.mp, lastv.(Pair).key)
+    node:=l.NodeList.PushFront(entry{
+        key:key,
+        val:value,
+    })
+    l.keyToNode[key]=node
+    if len(l.keyToNode)>l.cap{
+        back:=l.NodeList.Back()
+        l.NodeList.Remove(back)
+        bkey:=back.Value.(entry).key
+        delete(l.keyToNode, bkey)
     }
     return 
 }
 ```
+#### LFU
+https://leetcode.cn/problems/lfu-cache/solutions/2457716/tu-jie-yi-zhang-tu-miao-dong-lfupythonja-f56h/
+```go
+type entry struct{
+    key int
+    value int
+    freq int
+}
+type LFUCache struct {
+    //12:51
+    keyToNode map[int]*list.Element
+    freqToList map[int]*list.List
+    minFreq int
+    capacity int
+}
 
+
+func Constructor(capacity int) LFUCache {
+    return LFUCache{
+        keyToNode:make(map[int]*list.Element),
+        freqToList:make(map[int]*list.List),
+        minFreq:0,
+        capacity:capacity,
+    }
+}
+
+func (l *LFUCache) pushFrontFreq(e entry){
+    _,ok:=l.freqToList[e.freq]
+    if !ok{
+        l.freqToList[e.freq]=list.New()
+    }
+    l.keyToNode[e.key] = l.freqToList[e.freq].PushFront(e)
+}
+
+func (l *LFUCache) Get(key int) int {
+    node,ok:=l.keyToNode[key]
+    if !ok{
+        return -1
+    }
+    e:=node.Value.(entry)
+    lst:=l.freqToList[e.freq]
+    lst.Remove(node)
+    if lst.Len()==0{
+        delete(l.freqToList, e.freq)
+        if e.freq==l.minFreq{
+            l.minFreq++
+        }
+    }
+    e.freq++
+    l.pushFrontFreq(e)
+    return e.value
+}
+
+
+func (l *LFUCache) Put(key int, value int)  {
+    node,ok:=l.keyToNode[key]
+    if ok{
+        e:=node.Value.(entry)
+        lst:=l.freqToList[e.freq]
+        lst.Remove(node)
+        if lst.Len()==0{
+            delete(l.freqToList, e.freq)
+            if e.freq==l.minFreq{
+                l.minFreq++
+            }
+        }
+        e.freq++
+        e.value=value
+        l.pushFrontFreq(e)
+        return 
+    }
+    l.pushFrontFreq(entry{
+        key:key,
+        value:value,
+        freq:1,
+    })
+    if len(l.keyToNode)>l.capacity{
+        lst:=l.freqToList[l.minFreq]
+        e:=lst.Back().Value.(entry)
+        lst.Remove(lst.Back())
+        delete(l.keyToNode, e.key)
+        if lst.Len()==0{
+            delete(l.freqToList, l.minFreq)
+        }
+    }
+    l.minFreq=1
+    return 
+}
+```
 ### 字符串
 #### 151. 反转字符串中的单词
 逆序双指针
