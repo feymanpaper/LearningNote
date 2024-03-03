@@ -572,6 +572,7 @@ func reverse(s string) string{
 https://www.bilibili.com/video/BV1RP4y1G79Z/?spm_id_from=333.1007.top_right_bar_window_history.content.click&vd_source=108d23f95683578313bdaf5d938b5b3d
 本质都是先遍历根, 具体的时机不一样
 前序, 在向左之前do, 也就是将当前结点push前
+cursor负责压节点进栈, 经常处于nil
 ```go
 func preorderTraversal(root *TreeNode) []int {
     stk:=make([]*TreeNode, 0)
