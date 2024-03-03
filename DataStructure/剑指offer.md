@@ -41,3 +41,6 @@ func firstMissingPositive(nums []int) int {
 #### 位运算
 #### JZ15 二进制中1的个数
 
+#### 二叉树
+236. 二叉树的最近公共祖先
+235. 二叉搜索树的最近公共祖先
