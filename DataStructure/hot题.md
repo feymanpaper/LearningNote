@@ -755,24 +755,19 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 }
 ```
 #### 83. 删除排序链表中的重复元素
+保留相同的最后一个元素
 ```go
 func deleteDuplicates(head *ListNode) *ListNode {
     dummy:=&ListNode{}
     dummy.Next=head
-    pre:=dummy
     cur:=head
+    pre:=dummy
     for cur!=nil{
         for cur.Next!=nil&&cur.Val==cur.Next.Val{
             cur=cur.Next
         }
-        if pre.Next==cur{
-            pre=cur
-        }else{
-            pre=pre.Next
-            pre.Next=cur.Next
-            cur.Next=nil
-            cur=pre
-        }
+        pre.Next=cur
+        pre=cur
         cur=cur.Next
     }
     return dummy.Next
@@ -793,8 +788,6 @@ func deleteDuplicates(head *ListNode) *ListNode {
             pre=cur
         }else{
             pre.Next=cur.Next
-            cur.Next=nil
-            cur=pre
         }
         cur=cur.Next
     }
