@@ -817,7 +817,6 @@ func reverseN(head *ListNode, n int) *ListNode {
 	}
     if n == 1 {
         // 记录第 n + 1 个节点
-        successor = head.Next
         return head
     }
     // 以 head.Next 为起点，需要反转前 n - 1 个节点
@@ -844,6 +843,9 @@ func reverseBetween(head *ListNode, left int, right int) *ListNode {
 sol: 先实现反转前N个节点, 然后递归反转k个节点, 不需要存后继
 ```go
 func reverseN(head *ListNode, n int) *ListNode{
+    if head==nil||head.Next==nil{
+        return head
+    }
     if n==1{
         return head
     }
@@ -854,8 +856,8 @@ func reverseN(head *ListNode, n int) *ListNode{
 }
 
 func reverseKGroup(head *ListNode, k int) *ListNode {
-    if head==nil{
-        return nil
+    if head==nil||head.Next==nil{
+        return head
     }
     cur:=head
     for i:=0; i<k; i++{
@@ -867,6 +869,26 @@ func reverseKGroup(head *ListNode, k int) *ListNode {
     last:=reverseN(head, k)
     head.Next=reverseKGroup(cur, k)
     return last
+}
+```
+变题：改成后序不足k个节点也要反转
+```go
+func reverseKGroup(head *ListNode, k int) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	cur := head
+	cnt := 0
+	for i := 0; i < k; i++ {
+		cnt++
+		if cur == nil {
+			return reverseN(head, cnt)
+		}
+		cur = cur.Next
+	}
+	last := reverseN(head, k)
+	head.Next = reverseKGroup(cur, k)
+	return last
 }
 ```
 ### 技巧
