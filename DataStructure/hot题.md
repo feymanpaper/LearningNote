@@ -511,6 +511,33 @@ func largestRectangleArea(heights []int) int {
     return ans
 }
 ```
+#### 402. 移掉 K 位数字
+```go
+func removeKdigits(num string, k int) string {
+    stk:=make([]byte, 0)
+    n:=len(num)
+    for i:=0; i<n; i++{
+        for len(stk)>0&&num[i]<stk[len(stk)-1]&&k>0{
+            stk=stk[:len(stk)-1]
+            k--
+        }
+        if num[i]=='0'&&len(stk)==0{
+            continue
+        }
+        stk=append(stk, num[i])
+
+    }
+    for k>0&&len(stk)!=0{
+        stk=stk[:len(stk)-1]
+        k--
+    }
+    if len(stk)==0{
+        return "0"
+    }
+    return string(stk)
+}
+```
+#### 316. 去除重复字母
 #### 栈模拟
 224. 基本计算器（困难）
 227. 基本计算器II（中等）
@@ -611,32 +638,7 @@ func reverse(s string) string{
     return string(t)
 }
 ```
-402. 移掉 K 位数字
-```go
-func removeKdigits(num string, k int) string {
-    stk:=make([]byte, 0)
-    n:=len(num)
-    for i:=0; i<n; i++{
-        for len(stk)>0&&num[i]<stk[len(stk)-1]&&k>0{
-            stk=stk[:len(stk)-1]
-            k--
-        }
-        if num[i]=='0'&&len(stk)==0{
-            continue
-        }
-        stk=append(stk, num[i])
 
-    }
-    for k>0&&len(stk)!=0{
-        stk=stk[:len(stk)-1]
-        k--
-    }
-    if len(stk)==0{
-        return "0"
-    }
-    return string(stk)
-}
-```
 ### 二叉树
 #### 前中后序遍历
 迭代法:
@@ -708,6 +710,9 @@ func postorderTraversal(root *TreeNode) []int {
     return ans
 }
 ```
+#### 层序遍历
+
+
 #### 124. 二叉树中的最大路径和
 当前root的最大路径和取决于max(lsum, 0) +max(rsum, 0)+root.Val, 返回值是max(max(lsum, 0), max(rsum, 0))+root.Val
 ```go
@@ -1392,3 +1397,8 @@ func randMToRandN() int{
     return -1
 }
 ```
+
+### 图
+拓扑排序
+207. 课程表
+210. 课程表 II
