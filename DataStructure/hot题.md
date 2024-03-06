@@ -611,7 +611,32 @@ func reverse(s string) string{
     return string(t)
 }
 ```
+402. 移掉 K 位数字
+```go
+func removeKdigits(num string, k int) string {
+    stk:=make([]byte, 0)
+    n:=len(num)
+    for i:=0; i<n; i++{
+        for len(stk)>0&&num[i]<stk[len(stk)-1]&&k>0{
+            stk=stk[:len(stk)-1]
+            k--
+        }
+        if num[i]=='0'&&len(stk)==0{
+            continue
+        }
+        stk=append(stk, num[i])
 
+    }
+    for k>0&&len(stk)!=0{
+        stk=stk[:len(stk)-1]
+        k--
+    }
+    if len(stk)==0{
+        return "0"
+    }
+    return string(stk)
+}
+```
 ### 二叉树
 #### 前中后序遍历
 迭代法:
