@@ -1410,3 +1410,54 @@ func randMToRandN() int{
 
 ### 堆
 手写堆
+```go
+//小根堆
+type Heap struct{
+    nums []int
+}
+func down(nums []int, idx, n int){
+    child:=2*idx+1
+    for child<n{
+        if child+1<n&&nums[child+1]<nums[child]{
+            child++
+        }
+        if nums[idx]<=nums[child]{
+            break
+        }
+        nums[idx],nums[child]=nums[child],nums[idx]
+        idx=child
+        child=child*2+1
+    }
+    return 
+}
+func up(nums []int, idx int){
+    par:=(idx-1)>>1
+    for par>=0{
+        if nums[par]<=nums[idx]{
+            break
+        }
+        nums[idx],nums[par]=nums[par],nums[idx]
+        idx=par
+        par=(par-1)>>1
+    }
+    return 
+}
+func (h *Heap) Push(x int){
+    h.nums=append(h.nums, x)
+    up(h.nums, len(h.nums)-1)
+}
+func (h *Heap) Len() int{
+    return len(h.nums)
+}
+func (h *Heap) Pop() int{
+    ans:=h.nums[0]
+    n:=len(h.nums)
+    h.nums[0],h.nums[n-1]=h.nums[n-1],h.nums[0]
+    down(h.nums, 0, n-1)
+    h.nums=h.nums[:n-1]
+    return ans
+}
+func (h *Heap) Peek() int{
+    return h.nums[0]
+}
+```
