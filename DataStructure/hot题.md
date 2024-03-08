@@ -169,8 +169,8 @@ func subrob(root *TreeNode) (int, int){
 ```
 ### 二分
 #### 搜索旋转数组系列
-该系列比较难抽象成红蓝二分，这里给的抽象是l及左边都不满足条件, r及右边都不满足条件
-
+该系列比较难抽象成红蓝二分，这里给的抽象是直接染色, 注意l表示左边界, r表示右边界
+抽象的方法是，l及左边的都不符合条件, r及右边的都不符合条件
 33. 搜索旋转排序数组
 注意是每个数是互不相同的
 
@@ -196,13 +196,16 @@ func search(nums []int, target int) int {
         mid:=l+(r-l)>>1
         if nums[mid]==target{
             return mid
+        //注意此处是l+1<=mid, 因为这个时候是只有一个值的边界情况
         }else if nums[l+1]<=nums[mid]{
+	        //注意此处是l+1<=target
             if nums[l+1]<=target&&target<nums[mid]{
                 r=mid
             }else{
                 l=mid
             }
         }else{
+	        //注意此处是target<=nums[r-1]
             if nums[mid]<target&&target<=nums[r-1]{
                 l=mid
             }else{
@@ -227,6 +230,7 @@ func search(nums []int, target int) bool {
         if nums[mid]==target{
             return true
         }
+        //注意此时可能满足只有一个值或者元素重复的情况，所以单独处理l++
         if nums[l+1]<nums[mid]{
             if nums[l+1]<=target&&target<nums[mid]{
                 r=mid
@@ -285,6 +289,7 @@ func findMin(nums []int) int {
             ans=min(ans, nums[mid])
             r=mid
         }else{
+	        //注意此时也需要更新最小值
             ans=min(ans, nums[mid])
             l++
         }
