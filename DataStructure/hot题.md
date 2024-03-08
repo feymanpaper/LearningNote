@@ -468,7 +468,29 @@ func trap(height []int) int {
     return ans
 }
 ```
-
+三个指针
+75. 颜色分类
+```go
+func sortColors(nums []int)  {
+    n:=len(nums)
+    zero:=0
+    one:=0
+    two:=n-1
+    for one<=two{
+        if nums[one]==1{
+            one++
+        }else if nums[one]==0{
+            nums[one],nums[zero]=nums[zero],nums[one]
+            one++
+            zero++
+        }else{
+            nums[one],nums[two]=nums[two],nums[one]
+            two--
+        }
+    }
+    return 
+}
+```
 ### 单调栈/栈模拟
 #### 84. 柱状图中最大的矩形
 sol:方法一：暴力解法（超时）
