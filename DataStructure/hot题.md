@@ -929,6 +929,31 @@ func reverseBetween(head *ListNode, left int, right int) *ListNode {
     return head
 }
 ```
+迭代法:
+```go
+func reverseBetween(head *ListNode, left int, right int) *ListNode {
+    if head==nil||head.Next==nil{
+        return head
+    }
+    dummy:=&ListNode{}
+    dummy.Next=head
+    l:=dummy
+    for i:=0; i<left-1; i++{
+        l=l.Next
+    }
+    pre:=l.Next
+    cur:=pre.Next
+    for i:=0; i<right-left; i++{
+        nx:=cur.Next
+        cur.Next=pre
+        pre=cur
+        cur=nx
+    }
+    l.Next.Next=cur
+    l.Next=pre
+    return dummy.Next
+}
+```
 25. K 个一组翻转链表
 sol: 先实现反转前N个节点, 然后递归反转k个节点, 不需要存后继
 ```go
@@ -1472,5 +1497,28 @@ func (h *Heap) Pop() int{
 }
 func (h *Heap) Peek() int{
     return h.nums[0]
+}
+```
+堆go实现接口模版
+```go
+type hp []int
+func (h hp) Len() int{
+	return len(h)
+}
+func (h hp) Swap(i, j int){
+	h[i],h[j]=h[j],h[i]
+}
+func (h hp) Less(i, j int) bool{
+	return h[i]>h[j]
+}
+func (h *hp) Push(x any){
+	*h=append(*h, x.(int))
+}
+func (h *hp)Pop() any{
+	t:=*h
+	//注意此处是t[len(t)-1], 因为go底层是先swap, 再调用这个Pop方法
+	x:=t[len(t)-1]
+	*h=t[:len(t)-1]
+	return x
 }
 ```

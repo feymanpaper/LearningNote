@@ -210,7 +210,6 @@ func (h *hp) Pop() any {
 	h.IntSlice = a[:len(a)-1]
 	return v
 }
-
 ```
 模版2
 ```go
