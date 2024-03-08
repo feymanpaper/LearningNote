@@ -1012,6 +1012,61 @@ https://www.nowcoder.com/practice/3a188e9c06ce4844b031713b82784a2a?tpId=117&tqId
 先奇偶链表, 再反转链表, 再合并两个升序链表
 #### 143. 重排链表
 先快慢指针找到中点，然后反转链表, 再合并链表
+#### 148. 排序链表
+快慢指针，然后归并合并
+```go
+func mergeSortList(head *ListNode) *ListNode{
+    if head==nil||head.Next==nil{
+        return head
+    }
+    fast:=head
+    slow:=head
+    pre:=head
+    for fast!=nil&&fast.Next!=nil{
+        fast=fast.Next.Next
+        pre=slow
+        slow=slow.Next
+    }
+    pre.Next=nil
+    a:=mergeSortList(head)
+    b:=mergeSortList(slow)
+    return mergeList(a, b)
+}
+
+func mergeList(head1, head2 *ListNode) *ListNode{
+    dummy:=&ListNode{}
+    cur:=dummy
+    p:=head1
+    q:=head2
+    for p!=nil||q!=nil{
+        if p!=nil&&q!=nil{
+            if p.Val<q.Val{
+                cur.Next=&ListNode{
+                    Val:p.Val,
+                }
+                p=p.Next
+            }else{
+                cur.Next=&ListNode{
+                    Val:q.Val,
+                }
+                q=q.Next
+            }
+        }else if p!=nil{
+            cur.Next=&ListNode{
+                Val:p.Val,
+            }
+            p=p.Next
+        }else if q!=nil{
+            cur.Next=&ListNode{
+                Val:q.Val,
+            }
+            q=q.Next
+        }
+        cur=cur.Next
+    }
+    return dummy.Next
+}
+```
 ### 技巧
 
 #### 31. 下一个排列
