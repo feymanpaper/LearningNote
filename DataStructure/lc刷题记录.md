@@ -344,13 +344,9 @@ func Constructor() MedianFinder {
 func (this *MedianFinder) AddNum(num int)  {
     tlen:=len(this.lh)+len(this.rh)
     if tlen&1==0{
-        if len(this.lh)==0{
-            heap.Push(&this.lh, num)
-        }else{
-            heap.Push(&this.rh, num)
-            x:=heap.Pop(&this.rh).(int)
-            heap.Push(&this.lh, x)
-        }
+		heap.Push(&this.rh, num)
+		x:=heap.Pop(&this.rh).(int)
+		heap.Push(&this.lh, x)
     }else{
         //奇数
         heap.Push(&this.lh, num)
