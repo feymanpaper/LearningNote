@@ -805,6 +805,14 @@ func pathSum(root *TreeNode, targetSum int) int {
 回溯
 112. 路径总和
 回溯
+
+236. 二叉树的最近公共祖先
+一共有五种情况，在纸上画一下
+1.root为nil, 返回root
+2.root就是p或者q, 那么root p/q就可能在root的子节点，此时root是最近祖先，否则返回给上层节点继续判断，总之这两种情况都是返回root
+3.root的左边有答案，右边没有答案，则信赖左边返回的结果
+4.root的左边无，右边有答案，信赖右边返回的结果
+5.root的左右都有答案, p和q在root的两边, 返回root
 ### 链表
 #### 环形链表
 141. 环形链表
