@@ -1602,3 +1602,49 @@ func (h *hp)Pop() any{
 }
 ```
 ### 多线程
+个人的思考，锁和信号量能做的，channel都能做，但是channel的性能会差一些
+n个协程打印一个数组
+```go
+func main() {
+	n := 10
+	nums := make([]int, 0)
+	for i := 225; i >= 0; i-- {
+		nums = append(nums, i)
+	}
+	wg := sync.WaitGroup{}
+	wg.Add(n)
+	chanList := make([]chan struct{}, n)
+	for i := 0; i < n; i++ {
+		chanList[i] = make(chan struct{}, 0)
+	}
+	arridx := 0
+	//最先开始执行任务的goroutine序号
+	firstG := 3
+	fmt.Println("start Go")
+	for i := 0; i < n; i++ {
+		go func(idx int) {
+			defer wg.Done()
+			for {
+				<-chanList[idx]
+				if arridx < len(nums) {
+					fmt.Println("goroutine", idx, nums[arridx])
+					arridx += 1
+					chanList[(idx+1)%n] <- struct{}{}
+				} else {
+					chanList[(idx+1)%n] <- struct{}{}
+					fmt.Println("goroutine", idx, "finish")
+					break
+				}
+			}
+			//如果是最后一个执行任务的下个协程, 还需要帮助最后一个执行任务的协程退出
+			if idx == (len(nums)+firstG)%n {
+				<-chanList[idx]
+			}
+		}(i)
+	}
+	//最先开始执行任务
+	chanList[firstG] <- struct{}{}
+	wg.Wait()
+	fmt.Println("finish")
+}
+```
