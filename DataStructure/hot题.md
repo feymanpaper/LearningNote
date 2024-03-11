@@ -1519,6 +1519,60 @@ func randMToRandN() int{
     return -1
 }
 ```
+#### 43. 字符串相乘
+```go
+func multiply(num1 string, num2 string) string {
+    //15:54
+    if num1=="0"||num2=="0"{
+        return "0"
+    }
+    m:=len(num1)
+    n:=len(num2)
+    ans:=make([]int, m+n)
+    for i:=m-1; i>=0; i--{
+        for j:=n-1; j>=0; j--{
+            x:=int(num1[i]-'0')
+            y:=int(num2[j]-'0')
+            sum:=ans[i+j+1]+x*y
+            carry:=sum/10
+            ans[i+j+1]=sum%10
+            ans[i+j]+=carry
+        }
+    }
+    idx:=0
+    for ; idx<len(ans)&&ans[idx]==0;idx++{}
+    res:=""
+    for ;idx<len(ans); idx++{
+        res+=strconv.Itoa(ans[idx])
+    }
+    return res
+}
+```
+#### 字符数组实现2的n次方
+```go
+func getTwoPow(n int) string {
+	ans := make([]int, 1000)
+	ans[len(ans)-1] = 1
+	m := len(ans)
+	for i := 0; i < n; i++ {
+		carry := 0
+		for j := m - 1; j >= 0; j-- {
+			sum := ans[j] * 2
+			ans[j] = sum%10 + carry
+			carry = sum / 10
+		}
+		fmt.Println(ans)
+	}
+	idx := 0
+	for ; idx < m && ans[idx] == 0; idx++ {
+	}
+	res := ""
+	for ; idx < m; idx++ {
+		res += strconv.Itoa(ans[idx])
+	}
+	return res
+}
+```
 
 ### 图
 拓扑排序
