@@ -864,6 +864,34 @@ func isSubtree(root *TreeNode, subRoot *TreeNode) bool {
     return isSubtree(root.Left, subRoot)||isSubtree(root.Right, subRoot)
 }
 ```
+剑指 Offer 26. 树的子结构
+注意子结构和子树的区别
+```go
+func isSameStruct(root1 *TreeNode, root2 *TreeNode) bool{
+    if root1==nil&&root2==nil{
+        return true
+    }
+    if root2==nil{
+        return true
+    }
+    if root1==nil{
+        return false
+    }
+    if root1.Val!=root2.Val{
+        return false
+    }
+    return isSameStruct(root1.Left, root2.Left)&&isSameStruct(root1.Right, root2.Right)
+} 
+func isSubStructure(A *TreeNode, B *TreeNode) bool {
+    if A==nil||B==nil{
+        return false
+    }
+    if isSameStruct(A, B){
+        return true
+    }
+    return isSubStructure(A.Left, B)||isSubStructure(A.Right, B)
+}
+```
 ### 链表
 #### 环形链表
 141. 环形链表
