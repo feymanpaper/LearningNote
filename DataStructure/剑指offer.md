@@ -67,3 +67,52 @@ func Power( base float64 ,  exponent int ) float64 {
     return ans*ans*base
 }
 ```
+
+#### 双指针
+264. 丑数 II
+```go
+func nthUglyNumber(n int) int {
+    nums:=make([]int, n+1)
+    nums[1]=1
+    a,b,c:=1,1,1
+    for i:=2; i<=n; i++{
+        temp:=min(2*nums[a], min(3*nums[b], 5*nums[c]))
+        if temp==2*nums[a]{
+            a++
+        }
+        if temp==3*nums[b]{
+            b++
+        }
+        if temp==5*nums[c]{
+            c++
+        }
+        nums[i]=temp
+    }
+    return nums[n]
+}
+```
+313. 超级丑数
+拓展到一般规律
+```go
+func nthSuperUglyNumber(n int, primes []int) int {
+    nums:=make([]int, n+1)
+    nums[1]=1
+    index:=make([]int, len(primes))
+    for i:=0; i<len(index); i++{
+        index[i]=1
+    }
+    for i:=2; i<=n; i++{
+        temp:=math.MaxInt
+        for j:=0; j<len(primes); j++{
+            temp=min(temp, nums[index[j]]*primes[j])
+        }
+        for j:=0; j<len(primes); j++{
+            if nums[index[j]]*primes[j]==temp{
+                index[j]++
+            }
+        }
+        nums[i]=temp
+    }
+    return nums[n]
+}
+```
