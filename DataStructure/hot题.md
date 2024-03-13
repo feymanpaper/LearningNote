@@ -167,6 +167,42 @@ func subrob(root *TreeNode) (int, int){
     return rob, not
 }
 ```
+#### dp记录路径
+JZ85 连续子数组的最大和(二), dp记录
+```go
+func FindGreatestSumOfSubArray( nums []int ) []int {
+    // write code here
+    n:=len(nums)
+    dp:=make([]int, n)
+    pre:=make([]int, n)
+    ans:=make([]int, 0)
+    dp[0]=nums[0]
+    pre[0]=-1
+    maxVal:=nums[0]
+    maxIdx:=0
+    for i:=1; i<n; i++{
+        if dp[i-1]+nums[i]>=nums[i]{
+            dp[i]=dp[i-1]+nums[i]
+            pre[i]=i-1
+        }else{
+            dp[i]=nums[i]
+            pre[i]=-1
+        }
+        if dp[i]>=maxVal{
+            maxVal=dp[i]
+            maxIdx=i
+        }
+    }
+    for maxIdx!=-1{
+        ans=append(ans, nums[maxIdx])
+        maxIdx=pre[maxIdx]
+    }
+    for i:=0; i<len(ans)/2; i++{
+        ans[i],ans[len(ans)-1-i]=ans[len(ans)-1-i],ans[i]
+    }
+    return ans
+}
+```
 ### 二分
 #### 搜索旋转数组系列
 该系列比较难抽象成红蓝二分，这里给的抽象是直接染色, 注意l表示左边界, r表示右边界
