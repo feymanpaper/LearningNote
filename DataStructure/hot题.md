@@ -835,6 +835,35 @@ func pathSum(root *TreeNode, targetSum int) int {
 3.root的左边有答案，右边没有答案，则信赖左边返回的结果
 4.root的左边无，右边有答案，信赖右边返回的结果
 5.root的左右都有答案, p和q在root的两边, 返回root
+#### 二叉树对称性
+https://leetcode.cn/problems/shu-de-zi-jie-gou-lcof/solutions/791039/yi-pian-wen-zhang-dai-ni-chi-tou-dui-che-uhgs/
+100. 相同的树
+```go
+func isSame(root1 *TreeNode, root2 *TreeNode) bool{
+    if root1==nil&&root2==nil{
+        return true
+    }
+    if root1==nil||root2==nil{
+        return false
+    }
+    if root1.Val!=root2.Val{
+        return false
+    }
+    return isSame(root1.Left, root2.Left)&&isSame(root1.Right, root2.Right)
+}
+```
+572. 另一棵树的子树
+```go
+func isSubtree(root *TreeNode, subRoot *TreeNode) bool {
+    if root==nil||subRoot==nil{
+        return false
+    }
+    if isSame(root, subRoot){
+        return true
+    }
+    return isSubtree(root.Left, subRoot)||isSubtree(root.Right, subRoot)
+}
+```
 ### 链表
 #### 环形链表
 141. 环形链表
