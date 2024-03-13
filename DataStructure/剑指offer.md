@@ -67,6 +67,19 @@ func Power( base float64 ,  exponent int ) float64 {
     return ans*ans*base
 }
 ```
+JZ65 不用加减乘除做加法
+https://leetcode.cn/problems/bu-yong-jia-jian-cheng-chu-zuo-jia-fa-lcof/solutions/174464/jin-zhi-tao-wa-ru-he-yong-wei-yun-suan-wan-cheng-j/
+```go
+func encryptionCalculate(dataA int, dataB int) int {
+    for dataB!=0{
+        add:=dataA^dataB
+        carry:=(dataA&dataB)<<1
+        dataA=add
+        dataB=carry
+    }
+    return dataA
+}
+```
 
 #### 双指针
 264. 丑数 II
