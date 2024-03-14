@@ -129,3 +129,5 @@ func nthSuperUglyNumber(n int, primes []int) int {
     return nums[n]
 }
 ```
+JZ21 调整数组顺序使奇数位于偶数前面(二)
+快排思想
