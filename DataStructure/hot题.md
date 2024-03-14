@@ -928,6 +928,111 @@ func isSubStructure(A *TreeNode, B *TreeNode) bool {
     return isSubStructure(A.Left, B)||isSubStructure(A.Right, B)
 }
 ```
+#### JZ36 二叉搜索树与双向链表
+https://leetcode.cn/problems/er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof/solutions/896127/tu-wen-bing-mao-zui-tong-su-yi-dong-de-t-0adg/
+改成双向循环链表问题也不大，pre指向最后一个元素
+```go
+func Convert( root *TreeNode ) *TreeNode {
+    // write code here
+    var pre *TreeNode
+    var head *TreeNode
+    var inorder func(root *TreeNode)
+    inorder = func(root *TreeNode){
+        if root==nil{
+            return 
+        }
+        inorder(root.Left)
+        if pre!=nil{
+            pre.Right=root
+        }else{
+            head=root
+        }
+        root.Left=pre
+        pre=root
+        inorder(root.Right)
+    }
+    inorder(root)
+    return head
+}
+```
+JZ37 序列化二叉树与反序列化
+```go
+func Serialize( root *TreeNode ) string {
+    // write code here
+    if root==nil{
+        return "#"
+    }
+    ans:=""
+    que:=make([]*TreeNode, 0)
+    que=append(que, root)
+    ans+=strconv.Itoa(root.Val)
+    for len(que)>0{
+        sz:=len(que)
+        for i:=0; i<sz; i++{
+            top:=que[0]
+            que=que[1:]
+            if top.Left!=nil{
+                ans+=","
+                ans+=strconv.Itoa(top.Left.Val)
+                que=append(que, top.Left)
+            }else{
+                ans+=",#"
+            }
+            if top.Right!=nil{
+                ans+=","
+                ans+=strconv.Itoa(top.Right.Val)
+                que=append(que, top.Right)
+            }else{
+                ans+=",#"
+            }
+        }
+    }
+    return ans
+}
+func Deserialize( s string ) *TreeNode {
+    // write code here
+    if len(s)<=0||s[0]=='#'{
+        return nil
+    }
+    strarr:=strings.Split(s, ",")
+    idx:=0
+    val,_:=strconv.Atoi(strarr[0])
+    root:=&TreeNode{
+        Val:val,
+    }
+    idx++
+    que:=make([]*TreeNode, 0)
+    que=append(que, root)
+    for len(que)>0{
+        sz:=len(que)
+        for i:=0; i<sz; i++{
+            top:=que[0]
+            que=que[1:]
+            if strarr[idx]=="#"{
+                top.Left=nil
+            }else{
+                val,_:=strconv.Atoi(strarr[idx])
+                top.Left=&TreeNode{
+                    Val:val,
+                }
+                que=append(que, top.Left)
+            }
+            idx++
+            if strarr[idx]=="#"{
+                top.Right=nil
+            }else{
+                val,_:=strconv.Atoi(strarr[idx])
+                top.Right=&TreeNode{
+                    Val:val,
+                }
+                que=append(que, top.Right)
+            }
+            idx++
+        }
+    }
+    return root
+}
+```
 ### 链表
 #### 环形链表
 141. 环形链表
