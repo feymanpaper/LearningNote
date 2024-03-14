@@ -1135,6 +1135,7 @@ func recur(head *ListNode) *ListNode{
 }
 ```
 #### 328. 奇偶链表
+将所有索引为奇数的节点和索引为偶数的节点分别组合在一起
 #### 排序奇升偶降链表
 https://www.nowcoder.com/practice/3a188e9c06ce4844b031713b82784a2a?tpId=117&tqId=39396&rp=1&ru=/exam/oj&qru=/exam/oj&sourceUrl=%2Fexam%2Foj%3Fpage%3D1%26pageSize%3D50%26search%3D207%26tab%3D%25E7%25AE%2597%25E6%25B3%2595%25E7%25AF%2587%26topicId%3D117&difficulty=undefined&judgeStatus=undefined
 先奇偶链表, 再反转链表, 再合并两个升序链表
