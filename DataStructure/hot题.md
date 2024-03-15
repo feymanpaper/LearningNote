@@ -1801,7 +1801,67 @@ func getTwoPow(n int) string {
 	return res
 }
 ```
-
+#### 大数相加
+#### 大数相减
+```go
+func substring(s string, t string) string {
+	// write code here
+    if len(s)<len(t){
+        return "-"+substring(t, s)
+    }else if len(s)==len(t){
+        if s<t{
+            return "-"+substring(t, s)
+        }else if s==t{
+            return "0"
+        }
+    }
+	ans := make([]byte, len(s))
+	p := len(s) - 1
+	q := len(t) - 1
+	borrow := 0
+    idx:=len(ans)-1
+	for p >= 0 || q >= 0 {
+		if p >= 0 && q >= 0 {
+			temp := int(s[p]-'0') - int(t[q]-'0') - borrow
+			ans[idx]= byte((temp+10)%10+'0')
+			if temp < 0 {
+				borrow = 1
+			} else {
+				borrow = 0
+			}
+			p--
+			q--
+		} else if p >= 0 {
+            temp:=int(s[p]-'0')-borrow
+            ans[idx]=byte((temp + 10) % 10+'0')
+			if temp < 0 {
+				borrow = 1
+			} else {
+				borrow = 0
+			}
+            p--
+		} else {
+            temp:=int(t[q]-'0')-borrow
+            ans[idx]=byte((temp + 10) % 10+'0')
+			if temp < 0 {
+				borrow = 1
+			} else {
+				borrow = 0
+			}
+            q--
+		}
+        idx--
+	}
+    idx++
+    for ;idx<len(ans); idx++{
+        if ans[idx]!='0'{
+            break
+        }
+    }
+    return string(ans[idx:])
+}
+```
+#### 大数相乘
 ### 图
 拓扑排序
 207. 课程表
