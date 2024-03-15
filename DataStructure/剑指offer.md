@@ -38,8 +38,82 @@ func firstMissingPositive(nums []int) int {
 }
 ```
 
+#### 排序
+JZ51 数组中的逆序对
+sol:归并排序
+```go
+func reversePairs(record []int) int {
+    ans:=mergeSort(record, 0, len(record)-1)
+    fmt.Println(record)
+    return ans
+}
+
+func mergeSort(nums []int, l, r int) int{
+    if l>=r{
+        return 0
+    }
+    mid:=l+(r-l)>>1
+    lsum:=mergeSort(nums, l, mid)
+    rsum:=mergeSort(nums, mid+1, r)
+    midsum:=merge(nums, l, mid, mid+1, r)
+    return lsum+midsum+rsum
+}
+
+func merge(nums []int, l1, r1, l2, r2 int) int{
+    n:=r1-l1+1+r2-l2+1
+    p:=l1
+    q:=l2
+    temp:=make([]int, n)
+    idx:=0
+    ans:=0
+    for p<=r1||q<=r2{
+        if p<=r1&&q<=r2{
+            if nums[p]<=nums[q]{
+                temp[idx]=nums[p]
+                p++
+            }else{
+                ans+=r1-p+1
+                temp[idx]=nums[q]
+                q++
+            }
+        }else if p<=r1{
+            temp[idx]=nums[p]
+            p++
+        }else{
+            temp[idx]=nums[q]
+            q++
+        }
+        idx++
+    }
+    for i:=l1; i<=r2; i++{
+        nums[i]=temp[i-l1]
+    }
+    return ans
+}
+```
+
 #### 位运算
-#### JZ15 二进制中1的个数
+JZ15 二进制中1的个数
+JZ56 数组中只出现一次的两个数字
+https://leetcode.cn/problems/single-number-iii/solutions/2484352/tu-jie-yi-zhang-tu-miao-dong-zhuan-huan-np9d2/
+```go
+func singleNumber(nums []int) []int {
+    two:=0
+    for _,x:=range nums{
+        two^=x
+    }
+    ans:=make([]int, 2)
+    lowb:=two&(-two)
+    for _,x:=range nums{
+        if x&lowb==0{
+            ans[0]^=x
+        }else{
+            ans[1]^=x
+        }
+    }
+    return ans
+}
+```
 
 #### 二叉树
 236. 二叉树的最近公共祖先
