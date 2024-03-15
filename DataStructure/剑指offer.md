@@ -91,7 +91,26 @@ func merge(nums []int, l1, r1, l2, r2 int) int{
     return ans
 }
 ```
-
+JZ61 扑克牌顺子
+```go
+func checkDynasty(places []int) bool {
+    sort.Slice(places, func(i, j int) bool{
+        return places[i]<places[j]
+    })
+    king:=0
+    for i,x:=range places{
+        if x==0{
+            king++
+        }else if i>0&&places[i]==places[i-1]{
+            return false
+        }
+    }
+    if places[len(places)-1]-places[king]<5{
+        return true
+    }
+    return false
+}
+```
 #### 位运算
 JZ15 二进制中1的个数
 JZ56 数组中只出现一次的两个数字
@@ -156,7 +175,32 @@ func encryptionCalculate(dataA int, dataB int) int {
 ```
 JZ43 整数中1出现的次数（从1到n整数中1出现的次数）
 https://leetcode.cn/problems/number-of-digit-one/solutions/1748815/by-baoya_uncle-2hnj/
-
+JZ44 数字序列中某一位的数字
+https://leetcode.cn/problems/nth-digit/solutions/1129550/pythonjavajavascriptgo-jian-dan-mo-ni-by-kk3x/
+```go
+func findNthDigit(n int) int {
+    dig:=1
+    num:=9
+    for n>dig*num{
+        n-=dig*num
+        dig++
+        num*=10
+        if math.MaxInt/num<dig{
+            break
+        }
+    }
+    first:=1
+    for i:=0; i<dig-1; i++{
+        first=first*10
+    }
+    n--
+    idx:=n/dig
+    subidx:=n%dig
+    loc:=first+idx
+    str:=strconv.Itoa(loc)
+    return int(str[subidx]-'0')
+}
+```
 #### 双指针
 264. 丑数 II
 ```go
