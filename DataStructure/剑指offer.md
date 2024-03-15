@@ -252,6 +252,22 @@ func nthSuperUglyNumber(n int, primes []int) int {
 JZ21 调整数组顺序使奇数位于偶数前面(二)
 快排思想
 
+剑指 Offer 62. 圆圈中最后剩下的数字
+```go
+func iceBreakingGame(n, m int) int {
+    nums:=make([]int, n)
+    for i:=0; i<n; i++{
+        nums[i]=i
+    }
+    idx:=0
+    for len(nums)>1{
+        idx=(idx+m-1)%len(nums)
+        nums=append(nums[:idx], nums[idx+1:]...)
+    }
+    return nums[0]
+}
+```
+
 #### 字符串模拟
 JZ20 表示数值的字符串
 https://leetcode.cn/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/solutions/1461026/by-gong-zhu-zi-zhu-3xvr/
