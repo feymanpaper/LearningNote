@@ -203,6 +203,22 @@ func FindGreatestSumOfSubArray( nums []int ) []int {
     return ans
 }
 ```
+#### 剪绳子问题
+https://leetcode.cn/problems/jian-sheng-zi-lcof/
+```go
+func cutRope( n int ) int {
+    // write code here
+    dp:=make([]int, n+1)
+    dp[2]=1
+    for i:=3; i<=n; i++{
+        for j:=2; j<i; j++{
+            temp:=max(j*dp[i-j], j*(i-j))
+            dp[i]=max(dp[i], temp)
+        }
+    }
+    return dp[n]
+}
+```
 ### 二分
 #### 搜索旋转数组系列
 该系列比较难抽象成红蓝二分，这里给的抽象是直接染色, 注意l表示左边界, r表示右边界
