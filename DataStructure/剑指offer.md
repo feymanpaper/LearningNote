@@ -80,6 +80,8 @@ func encryptionCalculate(dataA int, dataB int) int {
     return dataA
 }
 ```
+JZ43 整数中1出现的次数（从1到n整数中1出现的次数）
+https://leetcode.cn/problems/number-of-digit-one/solutions/1748815/by-baoya_uncle-2hnj/
 
 #### 双指针
 264. 丑数 II
@@ -131,3 +133,34 @@ func nthSuperUglyNumber(n int, primes []int) int {
 ```
 JZ21 调整数组顺序使奇数位于偶数前面(二)
 快排思想
+
+#### 字符串模拟
+JZ20 表示数值的字符串
+https://leetcode.cn/problems/biao-shi-shu-zhi-de-zi-fu-chuan-lcof/solutions/1461026/by-gong-zhu-zi-zhu-3xvr/
+```go
+func isNumeric( str string ) bool {
+    // write code here
+    s:=strings.Trim(str, " ")
+    if len(s)==0{
+        return false
+    }
+    numFlag:=false
+    dotFlag:=false
+    eFlag:=false
+    for i:=0; i<len(s); i++{
+        if s[i]>='0'&&s[i]<='9'{
+            numFlag=true
+        }else if s[i]=='.'&&!dotFlag&&!eFlag{
+            dotFlag=true
+        }else if (s[i]=='e'||s[i]=='E')&&(!eFlag&&numFlag){
+            eFlag=true
+            numFlag=false
+        }else if (s[i]=='+'||s[i]=='-')&&(i==0||s[i-1]=='e'||s[i-1]=='E'){
+
+        }else{
+            return false
+        }
+    }
+    return numFlag
+}
+```
