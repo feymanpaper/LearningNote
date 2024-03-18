@@ -91,6 +91,70 @@ func merge(nums []int, l1, r1, l2, r2 int) int{
     return ans
 }
 ```
+315. 计算右侧小于当前元素的个数
+此题重点, 可以求左边/右边 小于/大于当前元素的个数
+逆序对归并排序类似
+https://leetcode.cn/problems/count-of-smaller-numbers-after-self/solutions/1256119/zhen-xiao-bai-jiang-jie-gei-ni-bai-kai-l-78qf/
+```go
+var index []int
+var ans []int
+func mergeSort(nums []int, l, r int){
+    if l>=r{
+        return 
+    }
+    mid:=l+(r-l)>>1
+    mergeSort(nums, l, mid)
+    mergeSort(nums, mid+1, r)
+    merge(nums, l, mid, mid+1, r)
+}
+func merge(nums []int, l1, r1, l2, r2 int){
+    n:=r2-l2+1+r1-l1+1
+    p:=l1
+    q:=l2
+    idx:=0
+    temp:=make([]int, n)
+    tempidx:=make([]int, n)
+    for p<=r1||q<=r2{
+        if p<=r1&&q<=r2{
+            if nums[p]>nums[q]{
+                ans[index[p]]+=r2-q+1
+                temp[idx]=nums[p]
+                tempidx[idx]=index[p]
+                p++          
+            }else{
+                temp[idx]=nums[q]
+                tempidx[idx]=index[q]
+                q++
+            }
+        }else if p<=r1{
+            temp[idx]=nums[p]
+            tempidx[idx]=index[p]
+            p++
+        }else{
+            temp[idx]=nums[q]
+            tempidx[idx]=index[q]
+            q++
+        }
+        idx++
+    }
+    for i:=l1; i<=r2; i++{
+        nums[i]=temp[i-l1]
+        index[i]=tempidx[i-l1]
+    }
+    return 
+}
+func countSmaller(nums []int) []int {
+    n:=len(nums)
+    ans=make([]int, n)
+    index=make([]int, n)
+    for i:=0; i<n; i++{
+        index[i]=i
+    }
+    mergeSort(nums, 0, len(nums)-1)
+    return ans
+}
+```
+
 JZ61 扑克牌顺子
 ```go
 func checkDynasty(places []int) bool {
