@@ -210,6 +210,54 @@ func reversePairs(nums []int) int {
     return mergeSort(nums, 0, len(nums)-1)
 }
 ```
+NC349 计算数组的小和
+https://www.nowcoder.com/practice/6dca0ebd48f94b4296fc11949e3a91b8?tpId=196&tqId=40415&ru=/exam/oj
+```go
+var ans int64=0
+func mergeSort(nums []int, l, r int){
+    if l>=r{
+        return 
+    }
+    mid:=l+(r-l)>>1
+    mergeSort(nums, l, mid)
+    mergeSort(nums, mid+1, r)
+    merge(nums, l, mid, mid+1, r)
+}
+func merge(nums []int, l1, r1, l2, r2 int){
+    n:=r1-l1+1+r2-l2+1
+    temp:=make([]int, n)
+    p:=l1
+    q:=l2
+    idx:=0
+    for p<=r1||q<=r2{
+        if p<=r1&&q<=r2{
+            if nums[p]<=nums[q]{
+                ans+=int64(nums[p])*int64(r2-q+1)
+                temp[idx]=nums[p]
+                p++
+            }else{
+                temp[idx]=nums[q]
+                q++
+            }
+        }else if p<=r1{
+            temp[idx]=nums[p]
+            p++
+        }else{
+            temp[idx]=nums[q]
+            q++
+        }
+        idx++
+    }
+    for i:=l1; i<=r2; i++{
+        nums[i]=temp[i-l1]
+    }
+    return 
+}
+func calArray( nums []int ) int64 {
+    mergeSort(nums, 0, len(nums)-1)
+    return ans
+}
+```
 
 JZ61 扑克牌顺子
 ```go
