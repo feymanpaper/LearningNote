@@ -44,7 +44,6 @@ sol:归并排序
 ```go
 func reversePairs(record []int) int {
     ans:=mergeSort(record, 0, len(record)-1)
-    fmt.Println(record)
     return ans
 }
 
@@ -152,6 +151,63 @@ func countSmaller(nums []int) []int {
     }
     mergeSort(nums, 0, len(nums)-1)
     return ans
+}
+```
+493. 翻转对
+```go
+func mergeSort(nums []int, l, r int) int{
+    if l>=r{
+        return 0
+    }
+    mid:=l+(r-l)>>1
+    lsum:=mergeSort(nums, l, mid)
+    rsum:=mergeSort(nums, mid+1, r)
+    cross:=merge(nums, l, mid, mid+1, r)
+    return lsum+rsum+cross
+}
+func merge(nums []int, l1, r1, l2, r2 int) int{
+    n:=r1-l1+1+r2-l2+1
+    temp:=make([]int, n)
+    p:=l1
+    q:=l2
+    idx:=0
+    ans:=0
+    //此处求结果, 因为如果nums[p]>nums[q]&&!nums[p]>2*nums[q],此时是q++, 漏算结果
+    for p<=r1&&q<=r2{
+        if nums[p]>2*nums[q]{
+            ans+=r1-p+1
+            q++
+        }else{
+            p++
+        }
+    }
+    p=l1
+    q=l2
+    for p<=r1||q<=r2{
+        if p<=r1&&q<=r2{
+            if nums[p]<=nums[q]{
+                temp[idx]=nums[p]
+                p++
+            }else{
+                temp[idx]=nums[q]
+                q++
+            }
+        }else if p<=r1{
+            temp[idx]=nums[p]
+            p++
+        }else{
+            temp[idx]=nums[q]
+            q++
+        }
+        idx++
+    }
+    for i:=l1; i<=r2; i++{
+        nums[i]=temp[i-l1]
+    }
+    return ans
+}
+func reversePairs(nums []int) int {
+    return mergeSort(nums, 0, len(nums)-1)
 }
 ```
 
