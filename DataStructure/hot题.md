@@ -1317,6 +1317,11 @@ func mergeList(head1, head2 *ListNode) *ListNode{
     return dummy.Next
 }
 ```
+排序链表快排实现
+https://leetcode.cn/problems/sort-list/solutions/2400774/ge-chong-pai-xu-suan-fa-jie-jue-mou-pao-9dwmt/
+```go
+
+```
 ### 技巧
 
 #### 31. 下一个排列
