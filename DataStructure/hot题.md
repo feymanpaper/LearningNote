@@ -219,6 +219,56 @@ func cutRope( n int ) int {
     return dp[n]
 }
 ```
+#### 卡特兰数
+96. 不同的二叉搜索树
+```go
+func numTrees(n int) int {
+    if n==0{
+        return 0
+    }else if n==1{
+        return 1
+    }
+    dp:=make([]int, n+1)
+    dp[0]=1
+    dp[1]=1
+    for i:=2; i<=n; i++{
+        for j:=1; j<=i; j++{
+            dp[i]+=dp[j-1]*dp[i-j]
+        }
+    }
+    return dp[n]
+}
+```
+
+95. 不同的二叉搜索树 II
+```go
+func generateTrees(n int) []*TreeNode {
+    var backtrack func(l, r int) []*TreeNode
+    backtrack = func(l, r int) []*TreeNode{
+        ans:=make([]*TreeNode, 0)
+        if l>r{
+            ans=append(ans, nil)
+            return ans
+        }
+        for i:=l; i<=r; i++{
+            lchlist:=backtrack(l, i-1)
+            rchlist:=backtrack(i+1, r)
+            for _,lc:=range lchlist{
+                for _,rc:= range rchlist{
+                    root:=&TreeNode{
+                        Val:i,
+                    }
+                    root.Left=lc
+                    root.Right=rc
+                    ans=append(ans, root)
+                }
+            }
+        }
+        return ans
+    }
+    return backtrack(1, n)
+}
+```
 ### 二分
 #### 搜索旋转数组系列
 该系列比较难抽象成红蓝二分，这里给的抽象是直接染色, 注意l表示左边界, r表示右边界
