@@ -25,6 +25,54 @@ func longestPalindromeSubseq(s string) int {
     return dp[0][n-1]
 }
 ```
+115. 不同的子序列
+```go
+func numDistinct(s string, t string) int {
+    m:=len(t)
+    n:=len(s)
+    dp:=make([][]int, m+1)
+    for i:=0; i<=m; i++{
+        dp[i]=make([]int, n+1)
+    }
+    for i:=0; i<=n; i++{
+        dp[0][i]=1
+    }
+    //dp表示t中的前i个字符出现在s前j个字符的个数
+    for i:=1; i<=m; i++{
+        for j:=1; j<=n; j++{
+            if t[i-1]==s[j-1]{
+                dp[i][j]=dp[i-1][j-1]+dp[i][j-1]
+            }else{
+                dp[i][j]=dp[i][j-1]
+            }
+        }
+    }
+    return dp[m][n]
+}
+```
+32. 最长有效括号
+```go
+func longestValidParentheses(s string) int {
+    n:=len(s)
+    stk:=make([]int, 0)
+    dp:=make([]int, n+1)
+    ans:=0
+    for i:=1; i<=n; i++{
+        x:=s[i-1]
+        if x=='('{
+            stk=append(stk, i-1)
+        }else{
+            if len(stk)>0{
+                t:=stk[len(stk)-1]
+                stk=stk[:len(stk)-1]
+                dp[i]=dp[t]+i-t
+                ans=max(ans, dp[i])
+            }
+        }
+    }
+    return ans
+}
+```
 #### 背包问题
 #### 股票问题
 https://leetcode.cn/circle/discuss/qiAgHn/
