@@ -1565,6 +1565,32 @@ func longestConsecutive(nums []int) int {
     return ans
 }
 ```
+### 模拟
+498. 对角线遍历
+https://leetcode.cn/problems/diagonal-traverse/solutions/1497406/by-lin-shen-shi-jian-lu-k-laf5/
+```go
+func findDiagonalOrder(mat [][]int) []int {
+    n:=len(mat)
+    m:=len(mat[0])
+    ans:=make([]int, 0)
+    for i:=0; i<m+n-1; i++{
+        if i&1==0{
+            st:=min(i, n-1)
+            end:=max(0, i-(m-1))
+            for x:=st; x>=end; x--{
+                ans=append(ans, mat[x][i-x])
+            }
+        }else{
+            st:=max(0, i-(m-1))
+            end:=min(i, n-1)
+            for x:=st; x<=end; x++{
+                ans=append(ans, mat[x][i-x])
+            }
+        }   
+    }
+    return ans
+}
+```
 ### 设计数据结构
 #### LRU
 自己实现双向链表
