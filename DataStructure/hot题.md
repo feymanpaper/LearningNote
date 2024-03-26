@@ -1843,6 +1843,41 @@ func (l *LFUCache) Put(key int, value int)  {
     return 
 }
 ```
+### 贪心
+55. 跳跃游戏
+45. 跳跃游戏 II
+```go
+func jump(nums []int) int {
+    n:=len(nums)
+    if n<=1{
+        return 0
+    }
+    maxIdx:=0
+    idx:=0
+    ans:=0
+    for{
+        //如果能跳到终点, 直接跳, 退出计算答案
+        maxIdx=idx+nums[idx]
+        if maxIdx>=n-1{
+            ans++
+            break
+        }
+        // 否则不能跳到终点, 则在剩下可以跳的位置中选能跳最远的
+        nextIdx:=-1
+        tempMaxIdx:=-1
+        for i:=idx+1; i<=maxIdx; i++{
+            if i+nums[i]>=tempMaxIdx{
+                tempMaxIdx=i+nums[i]
+                nextIdx=i
+            }
+        }
+        ans++
+        idx=nextIdx
+    }
+    return ans
+}
+```
+
 ### 字符串
 #### 151. 反转字符串中的单词
 逆序双指针
@@ -2014,6 +2049,27 @@ func substring(s string, t string) string {
 }
 ```
 #### 大数相乘
+#### 7. 整数反转
+```go
+func reverse(x int) int {
+    var ans int32
+    copy:=x
+    for x!=0{
+        if ans<math.MinInt32/10||ans>math.MaxInt32/10{
+            return 0
+        }
+        ans=ans*10+int32(x%10)
+        x=x/10
+    }
+    if copy>0&&ans<0{
+        return 0
+    }
+    if copy<0&&ans>0{
+        return 0
+    }
+    return int(ans)
+}
+```
 ### 图
 拓扑排序
 207. 课程表
