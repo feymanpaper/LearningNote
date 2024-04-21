@@ -2070,6 +2070,30 @@ func reverse(x int) int {
     return int(ans)
 }
 ```
+#### 384.打乱数组
+洗牌算法
+https://leetcode.cn/problems/shuffle-an-array/solutions/1114959/pythonjavajavascriptgo-xi-pai-suan-fa-by-k7i2/
+```go
+type Solution struct {
+    nums []int
+}
+func Constructor(nums []int) Solution {
+    s := Solution{nums}
+    return s
+}
+func (this *Solution) Reset() []int {
+    return this.nums
+}
+func (this *Solution) Shuffle() []int {
+    temp := make([]int, len(this.nums))
+    copy(temp, this.nums)
+    for i := 0; i < len(temp); i++ {
+        idx := rand.Intn(len(temp) - i) + i
+        temp[i], temp[idx] = temp[idx], temp[i]
+    }
+    return temp
+}
+```
 ### 图
 拓扑排序
 207. 课程表
