@@ -1,0 +1,2 @@
+MySQL最大的问题是大查询单线程
+Clickhouse可以多线程
