@@ -998,7 +998,65 @@ func (this *Trie) SearchFirst() []int{
 }
 ```
 ### 并查集
-1631. 最小体力消耗路径
+1631.最小体力消耗路径
+684.冗余连接 , 模版
+```go
+type UnionSet struct{
+    pa []int
+}
+
+func (s *UnionSet) Union(x, y int){
+    fx:=s.Find(x)
+    fy:=s.Find(y)
+    if fx==fy{
+        return 
+    }
+    s.pa[fx]=fy
+}
+
+func (s *UnionSet) Find(x int) int{
+    if s.pa[x]==x{
+        return x
+    }
+    // 路径压缩
+    s.pa[x]=s.Find(s.pa[x])
+    return s.pa[x]
+}
+
+func (s *UnionSet) IsUnion(x, y int) bool{
+    fx:=s.Find(x)
+    fy:=s.Find(y)
+    if fx==fy{
+        return true
+    }
+    return false
+}
+
+func NewUnionSet(n int) *UnionSet{
+    pa:=make([]int, n+1)
+    for i:=1; i<=n; i++{
+        pa[i]=i
+    }
+    return &UnionSet{
+        pa:pa,
+    }
+}
+
+func findRedundantConnection(edges [][]int) []int {
+    uset:=NewUnionSet(len(edges))
+    ans:=make([]int, 2)
+    for _,e:=range edges{
+        x, y:=e[0], e[1]
+        if uset.IsUnion(x, y){
+            ans[0]=x
+            ans[1]=y
+            break
+        }
+        uset.Union(x, y)
+    }
+    return ans
+}
+```
 
 ### 二分
 红蓝二分
