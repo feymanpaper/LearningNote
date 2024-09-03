@@ -997,88 +997,8 @@ func (this *Trie) SearchFirst() []int{
 	return ans
 }
 ```
-### 并查集
-1631.最小体力消耗路径
-684.冗余连接 , 模版
-```go
-type UnionSet struct{
-    pa []int
-}
 
-func (s *UnionSet) Union(x, y int){
-    fx:=s.Find(x)
-    fy:=s.Find(y)
-    if fx==fy{
-        return 
-    }
-    s.pa[fx]=fy
-}
 
-func (s *UnionSet) Find(x int) int{
-    if s.pa[x]==x{
-        return x
-    }
-    // 路径压缩
-    s.pa[x]=s.Find(s.pa[x])
-    return s.pa[x]
-}
-
-func (s *UnionSet) IsUnion(x, y int) bool{
-    fx:=s.Find(x)
-    fy:=s.Find(y)
-    if fx==fy{
-        return true
-    }
-    return false
-}
-
-func NewUnionSet(n int) *UnionSet{
-    pa:=make([]int, n+1)
-    for i:=1; i<=n; i++{
-        pa[i]=i
-    }
-    return &UnionSet{
-        pa:pa,
-    }
-}
-
-func findRedundantConnection(edges [][]int) []int {
-    uset:=NewUnionSet(len(edges))
-    ans:=make([]int, 2)
-    for _,e:=range edges{
-        x, y:=e[0], e[1]
-        if uset.IsUnion(x, y){
-            ans[0]=x
-            ans[1]=y
-            break
-        }
-        uset.Union(x, y)
-    }
-    return ans
-}
-```
-### 最小生成树算法
-https://programmercarl.com/kamacoder/0053.%E5%AF%BB%E5%AE%9D-prim.html#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF
-#### kruskal算法
-先对所有边排序，然后不断加入并查集
-#### prim算法
-第一步，选距离生成树最近节点
-第二步，最近节点加入生成树
-第三步，更新非生成树节点到生成树的距离（即更新minDist数组）
-**minDist数组 用来记录 每一个节点距离最小生成树的最近距离**
-
-Prim 算法 时间复杂度为 O(n^2)，其中 n 为节点数量，它的运行效率和图中边树无关，适用稠密图
-Kruskal算法 时间复杂度 为 nlogn，其中n 为边的数量，适用稀疏图
-### 最短路算法
-dijkstra算法：在有权图（权值非负数）中求从起点到其他节点的最短路径算法
-dijkstra 算法可以同时求 起点到所有节点的最短路径
-权值不能为负数
-
-1. 第一步，选源点到哪个节点近且该节点未被访问过
-2. 第二步，该最近节点被标记访问过
-3. 第三步，更新非访问节点到源点的距离（即更新minDist数组）
-
-**minDist数组 用来记录 每一个节点距离源点的最小距离**
 
 ### 二分
 红蓝二分
