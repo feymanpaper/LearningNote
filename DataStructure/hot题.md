@@ -507,53 +507,6 @@ func search(arr []int, target int) int {
 }
 ```
 
-162. 寻找峰值
-https://leetcode.cn/problems/find-peak-element/solutions/998441/gong-shui-san-xie-noxiang-xin-ke-xue-xi-qva7v/
-```go
-func findPeakElement(nums []int) int {
-    n:=len(nums)
-    l:=-1
-    r:=n
-    for l+1!=r{
-        mid:=l+(r-l)>>1
-        if mid<n-1&&nums[mid]<nums[mid+1]{
-            l=mid
-        }else{
-            r=mid
-        }
-    }
-    return r
-}
-```
-540. 有序数组中的单一元素
-https://leetcode.cn/problems/single-element-in-a-sorted-array/solutions/1420951/by-sui-xin-yuan-yexh/
-```go
-func singleNonDuplicate(nums []int) int {
-    n:=len(nums)
-    l:=-1
-    r:=n
-    for l+1!=r{
-        mid:=l+(r-l)>>1
-        //也可以改成nums[mid^1]
-        if mid<n-1&&isBlue(nums, mid){
-            l=mid
-        }else{
-            r=mid
-        }
-    }
-    return nums[r]
-}
-
-func isBlue(nums []int, mid int) bool{
-    if mid&1==0&&nums[mid]==nums[mid+1]{
-        return true
-    }
-    if mid&1==1&&nums[mid]==nums[mid-1]{
-        return true
-    }
-    return false
-}
-```
 #### 难题
 4. 寻找两个正序数组的中位数
 https://leetcode.cn/problems/median-of-two-sorted-arrays/solutions/210764/di-k-xiao-shu-jie-fa-ni-zhen-de-dong-ma-by-geek-8m/?envType=study-plan-v2&envId=top-100-liked
