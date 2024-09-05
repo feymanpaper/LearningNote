@@ -958,61 +958,6 @@ func (this *Trie) SearchFirst() []int{
 
 
 
-### 二分
-红蓝二分
-https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/solutions/967331/lan-hong-hua-fen-fa-dan-mo-ban-miao-sha-e7r40/
-主体思路：left 指针掌管左边蓝色区域， right 指针掌管右边红色区域，两者互不冲突，通过不断向目标元素靠近扩大掌管区域，直到两者掌管区域接壤，即 left+1\=\=right 时终止。
-由于left的初始值为-1, 终止条件是left+1!=right, 因此right的区间范围为\[0,n\]
-反之, right的初始值为n, 因此left的区间范围为\[-1,n-1\]
-```go
-func bisearch(nums []int, tar int) int{
-    n:=len(nums)
-    l,r:=-1,n
-    for l+1!=r{
-        mid:=l+(r-l)/2
-        if tar>nums[mid]{
-            l=mid
-        }else{
-            r=mid
-        }
-    }
-    return r
-}
-```
-
-81. 搜索旋转排序数组 II
-
-二维二分
-74. 搜索二维矩阵
-两次二分
-240. 搜索二维矩阵 II
-sol1:用右上角巧妙法来做
-sol2:二维二分
-```go
-func searchMatrix(matrix [][]int, target int) bool {
-    m:=len(matrix)
-    n:=len(matrix[0])
-    var search func(rs, re, cs, ce int) bool
-    search = func(rs, re, cs, ce int) bool{
-        if rs>re||cs>ce{
-            return false
-        }
-	    //这个是必要的, 因为target<matrix[rowmid][colmid]时search(rs,rowmid,cs,colmid)没变化会爆内存
-        if rs==re&&cs==ce{
-            return target==matrix[rs][cs]
-        }
-        rowmid:=rs+(re-rs)>>1
-        colmid:=cs+(ce-cs)>>1
-        if target>matrix[rowmid][colmid]{
-            return search(rs, rowmid, colmid+1, ce)||search(rowmid+1,re, cs,colmid)||search(rowmid+1,re,colmid+1,ce)
-        }else if target<matrix[rowmid][colmid]{
-            return search(rs,rowmid,cs,colmid)||search(rs, rowmid, colmid+1,ce)||search(rowmid+1,re,cs,colmid)
-        }
-        return true
-    }
-    return search(0, m-1, 0, n-1)
-}
-```
 ### 前后缀
 1930. 长度为 3 的不同回文子序列
 2484. 统计回文子序列数目
