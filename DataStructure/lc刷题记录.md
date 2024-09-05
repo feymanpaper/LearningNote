@@ -807,48 +807,6 @@ func maxSlidingWindow(nums []int, k int) []int {
 862. 和至少为 K 的最短子数组
 1499. 满足不等式的最大值.  也可以用堆
 
-### 滑动窗口
-需要满足单调性z
-3. 无重复字符的最长子串
-模板题
-```go
-func lengthOfLongestSubstring(s string) int {
-    mp:=make(map[byte]int)
-    l:=0
-    n:=len(s)
-    ans:=0
-	//右侧不断更新寻找符合条件的答案
-    for r:=0; r<n; r++{
-        mp[s[r]]++
-        //左边收缩得到最优解
-        for ;l<r&&mp[s[r]]>1;l++{
-            mp[s[l]]--
-        }
-        //更新答案
-        ans=max(ans, r-l+1)
-    }
-    return ans
-}
-```
-209. 长度最小的子数组.  AC
-1438. 绝对差不超过限制的最长连续子数组.  AC
-211. 最大连续1的个数 III.  AC
-76. 最小覆盖子串 AC
-滑动窗口--不断增加right，直到达到一个可行解，然后left优化
-注意有个坑点:
-```
-Integer是对象  
-Integer会缓存频繁使用的数值，  
-数值范围为-128到127，在此范围内直接返回缓存值。  
-超过该范围就会new 一个对象
-要用equals比较
-```
-632. 最小区间
-sol1:预处理后滑动窗口
-sol2:排序k个有序链表
-
-1423. 可获得的最大点数
-正向思维逆向思维
 
 ### 链表
 剑指 Offer II 024. 反转链表
