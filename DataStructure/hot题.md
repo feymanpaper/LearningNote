@@ -92,6 +92,13 @@ func longestValidParentheses(s string) int {
 #### 背包问题
 #### 股票问题
 https://leetcode.cn/circle/discuss/qiAgHn/
+```
+T[i][0][0] = 0, T[i][0][1] = -Infinity
+
+T[i][k][0] = max(T[i - 1][k][0], T[i - 1][k][1] + prices[i])
+T[i][k][1] = max(T[i - 1][k][1], T[i - 1][k - 1][0] - prices[i])
+```
+
 dp\[i]\[0]表示第i天不持有股票
 dp\[i]\[1]表示第i天持有股票
 121. 买卖股票的最佳时机
