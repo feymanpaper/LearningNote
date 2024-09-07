@@ -315,6 +315,7 @@ func cutRope( n int ) int {
 ```
 #### 卡特兰数
 96. 不同的二叉搜索树
+https://leetcode.cn/problems/unique-binary-search-trees/solutions/550154/96-bu-tong-de-er-cha-sou-suo-shu-dong-ta-vn6x/
 ```go
 func numTrees(n int) int {
     if n==0{
