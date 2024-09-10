@@ -1894,6 +1894,46 @@ func reverseWords(s string) string {
 ```
 
 ### 数学
+##### 8.字符串转换整数 (atoi)
+只允许用int32不用int64位的解法
+核心思想: 在到32位的最大值或者最小值/10时, 预期看看会不会超出
+```go
+func myAtoi(s string) int {
+    var ans int32
+    n:=len(s)
+    sign:=1
+    idx:=0
+    // 无效前导空格
+    for idx<n&&s[idx] == ' '{
+        idx++
+    }
+    if idx>=n{
+        return 0
+    }
+    // 判断正负
+    if s[idx] == '-'{
+        idx++
+        sign = -1
+    }else if s[idx] == '+'{
+        idx++
+    }
+    // 去除前导0
+    for idx<n&&s[idx]=='0'{
+        idx++
+    }
+    for idx<n&&(s[idx]>='0'&&s[idx]<='9'){
+        ans = ans*10+int32(s[idx]-'0')*int32(sign)
+        if sign==1&&ans<0{
+            return math.MaxInt32
+        }else if sign==-1&&ans>0{
+            return math.MinInt32
+        }
+        idx++
+    }
+    return int(ans)
+}
+```
+
 #### 470. 用 Rand7() 实现 Rand10()
 题解:
 https://leetcode.cn/problems/implement-rand10-using-rand7/solutions/427572/cong-pao-ying-bi-kai-shi-xun-xu-jian-jin-ba-zhe-da/
