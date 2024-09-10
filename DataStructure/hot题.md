@@ -2206,6 +2206,52 @@ func (h *hp)Pop() any{
 }
 ```
 ### 多线程
+启动3个线程, 每个线程只打印1个字符A/B/C, 循环10次
+```go
+func main() {
+	c1 := make(chan struct{}, 0)
+	c2 := make(chan struct{}, 0)
+	c3 := make(chan struct{}, 0)
+	cnt := 10
+	wg := &sync.WaitGroup{}
+	wg.Add(3)
+	go func() {
+		defer wg.Done()
+		for i := 0; i < cnt; i++ {
+			<-c1
+			fmt.Println("A")
+			c2 <- struct{}{}
+		}
+		close(c1)
+	}()
+	go func() {
+		defer wg.Done()
+		for i := 0; i < cnt; i++ {
+			<-c2
+			fmt.Println("B")
+			c3 <- struct{}{}
+		}
+		close(c2)
+	}()
+	go func() {
+		defer wg.Done()
+		for i := 0; i < cnt; i++ {
+			<-c3
+			fmt.Println("C")
+			if i < cnt-1 {
+				c1 <- struct{}{}
+			}
+		}
+		close(c3)
+	}()
+	c1 <- struct{}{}
+	wg.Wait()
+	fmt.Println("Done")
+}
+
+```
+
+
 个人的思考，锁和信号量能做的，channel都能做，但是channel的性能会差一些
 n个协程打印一个数组
 ```go
