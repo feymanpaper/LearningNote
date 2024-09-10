@@ -1250,6 +1250,19 @@ func reverseN(head *ListNode, n int) *ListNode {
     head.Next = suc
     return last
 }
+
+func reverseN(head *ListNode, n int) *ListNode{
+    if head==nil||head.Next==nil{
+        return head
+    }
+    if n==1{
+        return head
+    }
+    last:=reverseN(head.Next, n-1)
+    head.Next.Next=head
+    head.Next=nil
+    return last
+}
 ```
 92. 反转链表 II, 反转left到right的节点
 sol: 先实现反转前N个节点, 然后递归处理, 需要存后继
