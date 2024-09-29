@@ -610,6 +610,28 @@ X % 2^n = X & (2^n – 1)
 
 但是解法一中需要改造，一般说排序算法都是针对于内部排序，一旦涉及到跟磁盘打交道（外部排序），则需要特殊的考虑。归并排序是天然适合外部排序的算法，可以将分割后的子数组写到单个文件中，归并时将小文件合并为更大的文件。当两个数组均排序完成生成两个大文件后，即可使用双指针遍历两个文件，如此可以使空间复杂度最低。
 
+260.只出现一次的数字 III
+https://leetcode.cn/problems/single-number-iii/solutions/2484352/tu-jie-yi-zhang-tu-miao-dong-zhuan-huan-np9d2/
+
+```go
+func singleNumber(nums []int) []int {
+    two:=0
+    for _,x:=range nums{
+        two^=x
+    }
+    ans:=make([]int, 2)
+    lowb:=two&(^two+1)
+    for _,x:=range nums{
+        if x&lowb==0{
+            ans[0]^=x
+        }else{
+            ans[1]^=x
+        }
+    }
+    return ans
+}
+```
+
 关于外部排序与JOIN，强烈推荐大家看一下 数据库内核杂谈（六）：表的 JOIN（连接）这一系列数据库相关的文章
 https://www.infoq.cn/article/6XGx92FyQ45cMXpj2mgZ
 
