@@ -14,3 +14,7 @@ As RAM becomes cheaper, the cost-per-gigabyte argument is eroded
 ```
 eroded 减弱,侵蚀
 ```
+At first, the same databases were used for both transaction processing and analytic queries. SQL turned out to be quite flexible in this regard: it works well for OLTP-type queries as well as OLAP-type queries.
+```
+in this regard 在这方面
+```
