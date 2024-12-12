@@ -10,3 +10,7 @@ It is of particular concern on SSDs, which can only overwrite blocks a limited n
 over the course of the databse's lifetime 在xxx的生命周期
 wear out 磨损
 ```
+As RAM becomes cheaper, the cost-per-gigabyte argument is eroded
+```
+eroded 减弱,侵蚀
+```
