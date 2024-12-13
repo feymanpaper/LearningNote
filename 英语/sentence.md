@@ -32,3 +32,9 @@ It rarely makes sense to use a multi-leader setup within a single datacenter, be
 it makes sense to start savingearly for higher education
 intelligible, justifiable, or practicable
 ```
+In the next chapter we will continue looking at data that is distributed across multiple machines, through the counterpart of replication: splitting a large dataset into partitions.
+```
+"Counterpart" 表示对应的，而不是反方。它指的是某人或某物在另一方或另一种情况中的对等或相当的事物
+
+Counter" 作为单独的词可以表示反对或相对的意思，比如"Counter argument"表示反方论点
+```
