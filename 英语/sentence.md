@@ -23,3 +23,12 @@ One solution is to make sure that any writes that are causally related to each o
 causal 因果的
 casual 随意的
 ```
+Pretending that replication is synchronous when in fact it is asynchronous is a recipe for problems down the line.
+```
+a recipe for problems down the line
+```
+It rarely makes sense to use a multi-leader setup within a single datacenter, because the benefits rarely outweigh the added complexity.
+```
+it makes sense to start savingearly for higher education
+intelligible, justifiable, or practicable
+```
