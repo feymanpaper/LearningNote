@@ -38,3 +38,12 @@ In the next chapter we will continue looking at data that is distributed across 
 
 Counter" 作为单独的词可以表示反对或相对的意思，比如"Counter argument"表示反方论点
 ```
+However, partitioning is the most established term, so we’ll stick with that.
+```
+stick with that
+```
+However, the downside of key range partitioning is that certain access patterns can lead to hot spots.
+```
+downside
+example: what's the downside of this approach?
+```
