@@ -18,3 +18,8 @@ At first, the same databases were used for both transaction processing and analy
 ```
 in this regard 在这方面
 ```
+One solution is to make sure that any writes that are causally related to each other are written to the same partition—but in some applications that cannot be done efficiently.
+```
+causal 因果的
+casual 随意的
+```
