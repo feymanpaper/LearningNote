@@ -47,3 +47,7 @@ However, the downside of key range partitioning is that certain access patterns 
 downside
 example: what's the downside of this approach?
 ```
+This approach to querying a partitioned database is sometimes known as scatter/ gather, and it can make read queries on secondary indexes quite expensive. Even if you query the partitions in parallel, scatter/gather is prone to tail latency amplification.
+```
+approach to doing sth
+```
