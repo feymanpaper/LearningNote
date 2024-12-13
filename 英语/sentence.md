@@ -51,3 +51,8 @@ This approach to querying a partitioned database is sometimes known as scatter/ 
 ```
 approach to doing sth
 ```
+There is one important question with regard to rebalancing that we have glossed over: does the rebalancing happen automatically or manually?
+```
+with regard to sth
+gloss over
+```
