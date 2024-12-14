@@ -56,3 +56,7 @@ There is one important question with regard to rebalancing that we have glossed 
 with regard to sth
 gloss over
 ```
+Many distributed datastores have abandoned multi-object transactions because they are difficult to implement across partitions, and they can get in the way in some scenarios where very high availability or performance is required.
+```
+get in the way 
+```
