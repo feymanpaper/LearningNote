@@ -60,3 +60,7 @@ Many distributed datastores have abandoned multi-object transactions because the
 ```
 get in the way 
 ```
+Concurrency issues (race conditions) only come into play when one transaction reads data that is concurrently modified by another transaction, or when two transactions try to simultaneously modify the same data.
+```
+come into play
+```
