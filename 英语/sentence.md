@@ -68,3 +68,12 @@ So far in this chapter we have explored the ways in which distributed systems ar
 ```
 explored the ways in which distributed systems are different from programs
 ```
+We have to reckon with the fact that any timing assumptions may be shattered occasionally
+```
+reckon with the fact
+shatter
+```
+This chapter has been all about problems, and has given us a bleak outlook. In the next chapter we will move on to solutions, and discuss some algorithms that have been designed to cope with all the problems in distributed systems.
+```
+cope with 
+```
