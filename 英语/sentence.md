@@ -64,3 +64,7 @@ Concurrency issues (race conditions) only come into play when one transaction re
 ```
 come into play
 ```
+So far in this chapter we have explored the ways in which distributed systems are different from programs running on a single computer: there is no shared memory, only message passing via an unreliable network with variable delays, and the systems may suffer from partial failures, unreliable clocks, and processing pauses.
+```
+explored the ways in which distributed systems are different from programs
+```
