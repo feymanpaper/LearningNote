@@ -81,3 +81,7 @@ nailing down precisely what that means actually requires some care
 ```
 nail down 弄清楚
 ```
+However, there a few areas in which linearizability is an important requirement for making a system work correctly
+```
+in which
+```
