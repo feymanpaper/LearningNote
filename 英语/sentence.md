@@ -85,3 +85,11 @@ However, there a few areas in which linearizability is an important requirement 
 ```
 in which
 ```
+Some consensus algorithms, which we will discuss later in this chapter, bear a resemblance to single-leader replication. However, consensus protocols contain measures to prevent split brain and stale replicas. Thanks to these details, consensus algorithms can implement linearizable storage safely. This is how ZooKeeper [21] and etcd [22] work, for example.
+```
+bear a resemblance
+```
+As some replication methods can provide linearizability and others cannot, it is interesting to explore the pros and cons of linearizability in more depth
+```
+pros and cons
+```
