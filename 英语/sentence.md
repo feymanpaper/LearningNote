@@ -77,3 +77,7 @@ This chapter has been all about problems, and has given us a bleak outlook. In t
 ```
 cope with 
 ```
+nailing down precisely what that means actually requires some care
+```
+nail down 弄清楚
+```
