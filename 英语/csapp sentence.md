@@ -26,3 +26,7 @@ If we were to
 2. **分析可能性**
 在分析某种情况的可能性时也很常用。例如，“If we were to view the market trends as irreversible, we would have to adjust our business strategy accordingly.”（如果我们把市场趋势看作是不可逆转的，我们就必须相应地调整我们的商业战略。）通过假设对市场趋势的看法，来探讨可能需要采取的行动。
 ```
+Modern microprocessors are among the most complex systems ever created by humans.
+
+Even the embedded processors found in everyday appliances such as cell phones, navigation systems, and programmable thermostats are far more powerful than the early developers of computers could ever have envisioned
+
