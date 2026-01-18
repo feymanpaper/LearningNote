@@ -6,6 +6,11 @@ Now, there could be different reasons why North Korea is dark at night. It could
 
 Let me tell you about some other things we know about the differences between poor countries and rich countries. Poor countries have much less educated people. They tend to have much less healthy people. They live shorter lives. They have much worse government services, like infrastructure. 
 
+So, here it is the idyllic driving scene in a part of the world, where I do a lot of research, the Democratic Republic of the Congo. This is what they called, somewhat ironically in the Congo, Interstate No.1. And you can see that driving on Interstate No.1, you spend a lot of time digging you car out of sand and mud. That is the dry season. If it was the rainy season, forget it. You are not going anywhere. 
+
+
+
+
 It wasn't just a matter of passing the law, it was enforcing the law
 
 
